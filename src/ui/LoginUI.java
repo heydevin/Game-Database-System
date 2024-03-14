@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginUI extends JFrame {
+    private final ImageIcon image;
+    private final JLabel imageLabel;
     private JFrame frame;
     private JPanel panel;
     private JLabel label_username, label_password;
@@ -18,11 +20,13 @@ public class LoginUI extends JFrame {
 
         label_username = new JLabel("Username");
         label_username.setFont(new Font("Arial", Font.PLAIN, 14));
+        label_username.setForeground(Color.WHITE);
         label_username.setBounds(130, 110, 70, 20);
         panel.add(label_username);
 
         label_password = new JLabel("Password");
         label_password.setFont(label_username.getFont());
+        label_password.setForeground(Color.WHITE);
         label_password.setBounds(label_username.getX(), label_username.getY() + 40,
                 label_username.getWidth(), label_username.getHeight());
         panel.add(label_password);
@@ -41,6 +45,12 @@ public class LoginUI extends JFrame {
         button_login.setBounds(textField_username.getX() + 20, label_username.getY() + 80, 80, 22);
         button_login.setFocusPainted(false);
         panel.add(button_login);
+
+        image = new ImageIcon("src/image/SkyView.jpg");
+        image.setImage(image.getImage().getScaledInstance(540,360,Image.SCALE_DEFAULT));
+        imageLabel = new JLabel(image);
+        imageLabel.setBounds(0, 0, 540, 360);
+        panel.add(imageLabel);
 
         frame.add(panel);
         panel.setLayout(null);
