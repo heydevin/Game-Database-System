@@ -1,9 +1,13 @@
 package ui;
 
+import connecter.LoginConnector;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginUI extends JFrame {
+public class LoginPage extends JFrame implements ActionListener {
     private final ImageIcon image;
     private final JLabel imageLabel;
     private JFrame frame;
@@ -11,7 +15,9 @@ public class LoginUI extends JFrame {
     private JLabel label_username, label_password;
     private JTextField textField_username, passwordField_password;
     private JButton button_login;
-    public LoginUI() {
+    private LoginConnector delegate;
+    public LoginPage(LoginConnector delegate) {
+        this.delegate = delegate;
         frame = new JFrame("Login Page");
         frame.setSize(540, 360);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,6 +50,7 @@ public class LoginUI extends JFrame {
         button_login = new JButton("Login");
         button_login.setBounds(textField_username.getX() + 20, label_username.getY() + 80, 80, 22);
         button_login.setFocusPainted(false);
+        button_login.addActionListener(this);
         panel.add(button_login);
 
         image = new ImageIcon("src/image/SkyView.jpg");
@@ -56,8 +63,13 @@ public class LoginUI extends JFrame {
         panel.setLayout(null);
         frame.setVisible(true);
     }
+    public void handleLoginFailed() {
+        passwordField_password.setText(""); // clear password field
+    }
 
-    public static void main(String[] args) {
-        new LoginUI();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Trying to log in...");
+        delegate.login(textField_username.getText(), String.valueOf(passwordField_password.getText()));
     }
 }

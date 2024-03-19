@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CharacterUI extends JFrame {
+public class CharacterPage extends JFrame {
     private JFrame frame;
     private JPanel panel;
     private JTable characterTable;
@@ -13,7 +13,7 @@ public class CharacterUI extends JFrame {
     private JScrollPane scrollPane;
     private DefaultTableModel tableModel;
 
-    public CharacterUI() {
+    public CharacterPage() {
         frame = new JFrame("Character Management");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,7 +87,7 @@ public class CharacterUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new CharacterUI();
+        new CharacterPage();
     }
 }
 

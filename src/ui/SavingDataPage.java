@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SavingData extends JFrame {
+public class SavingDataPage extends JFrame {
     private JFrame frame;
     private JPanel panel;
     private JComboBox<String> saveSlotComboBox;
@@ -16,7 +16,7 @@ public class SavingData extends JFrame {
     private DefaultTableModel tableModel;
     private Map<String, List<Object[]>> saveSlotData; // Maps save slots to character data lists
 
-    public SavingData() {
+    public SavingDataPage() {
         initializeData();
 
         frame = new JFrame("Select Save Slot");
@@ -75,6 +75,6 @@ public class SavingData extends JFrame {
     }
 
     public static void main(String[] args) {
-        new SavingData();
+        new SavingDataPage();
     }
 }

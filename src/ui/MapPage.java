@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MapUI extends JFrame implements ActionListener {
+public class MapPage extends JFrame implements ActionListener {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private JFrame desktop;
@@ -14,7 +14,7 @@ public class MapUI extends JFrame implements ActionListener {
     private JButton unlockedArea;
     private JButton lockedArea;
 
-    public MapUI() {
+    public MapPage() {
         desktop = new JFrame();
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -32,6 +32,9 @@ public class MapUI extends JFrame implements ActionListener {
         desktop.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        new MapPage();
+    }
 
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
