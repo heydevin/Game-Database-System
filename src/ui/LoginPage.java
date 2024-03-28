@@ -11,11 +11,15 @@ public class LoginPage extends JFrame implements ActionListener {
     private final ImageIcon image;
     private final JLabel imageLabel;
     private JFrame frame;
+    private JFrame displayInfoFrame;
     private JPanel panel;
     private JLabel label_username, label_password;
     private JTextField textField_username, passwordField_password;
     private JButton button_login;
     private LoginConnector delegate;
+    private JLabel label_uid;
+    private JPanel displayPanel;
+
     public LoginPage(LoginConnector delegate) {
         this.delegate = delegate;
         frame = new JFrame("Login Page");
@@ -63,8 +67,13 @@ public class LoginPage extends JFrame implements ActionListener {
         panel.setLayout(null);
         frame.setVisible(true);
     }
+
     public void handleLoginFailed() {
         passwordField_password.setText(""); // clear password field
+    }
+
+    public void closeLogin() {
+        frame.setVisible(false);
     }
 
     @Override

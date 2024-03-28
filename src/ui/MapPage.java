@@ -1,11 +1,14 @@
 package ui;
 
+import connecter.LoginConnector;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MapPage extends JFrame implements ActionListener {
+    private LoginConnector delegate;
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private JFrame desktop;
@@ -14,7 +17,7 @@ public class MapPage extends JFrame implements ActionListener {
     private JButton unlockedArea;
     private JButton lockedArea;
 
-    public MapPage() {
+    public MapPage(LoginConnector delegate) {
         desktop = new JFrame();
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -30,10 +33,6 @@ public class MapPage extends JFrame implements ActionListener {
         desktop.setSize(WIDTH, HEIGHT);
         centreOnScreen();
         desktop.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new MapPage();
     }
 
     private void centreOnScreen() {
@@ -93,6 +92,13 @@ public class MapPage extends JFrame implements ActionListener {
                 panel.setVisible(true);
             }
         });
+    }
+    public void close() {
+        desktop.setVisible(false);
+    }
+
+    public void open() {
+        desktop.setVisible(true);
     }
 }
 

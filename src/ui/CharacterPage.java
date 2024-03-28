@@ -1,11 +1,14 @@
 package ui;
 
+import connecter.LoginConnector;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CharacterPage extends JFrame {
+    private LoginConnector delegate;
     private JFrame frame;
     private JPanel panel;
     private JTable characterTable;
@@ -13,7 +16,9 @@ public class CharacterPage extends JFrame {
     private JScrollPane scrollPane;
     private DefaultTableModel tableModel;
 
-    public CharacterPage() {
+    public CharacterPage(LoginConnector delegate) {
+        this.delegate = delegate;
+
         frame = new JFrame("Character Management");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,9 +90,12 @@ public class CharacterPage extends JFrame {
             }
         });
     }
+    public void close() {
+        frame.setVisible(false);
+    }
 
-    public static void main(String[] args) {
-        new CharacterPage();
+    public void open() {
+        frame.setVisible(true);
     }
 }
 

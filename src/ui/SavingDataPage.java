@@ -1,5 +1,7 @@
 package ui;
 
+import connecter.LoginConnector;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SavingDataPage extends JFrame {
+    private LoginConnector delegate;
     private JFrame frame;
     private JPanel panel;
     private JComboBox<String> saveSlotComboBox;
@@ -16,7 +19,7 @@ public class SavingDataPage extends JFrame {
     private DefaultTableModel tableModel;
     private Map<String, List<Object[]>> saveSlotData; // Maps save slots to character data lists
 
-    public SavingDataPage() {
+    public SavingDataPage(LoginConnector delegate) {
         initializeData();
 
         frame = new JFrame("Select Save Slot");
@@ -74,7 +77,11 @@ public class SavingDataPage extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new SavingDataPage();
+    public void close() {
+        frame.setVisible(false);
+    }
+
+    public void open() {
+        frame.setVisible(true);
     }
 }
