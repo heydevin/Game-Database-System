@@ -40,7 +40,7 @@ public class GameSystem implements LoginConnector {
             characterWindow.close();
             mapWindow = new MapPage(this);
             mapWindow.close();
-
+            // incomplete
             dbHandler.databaseSetup();
 
         } else {
