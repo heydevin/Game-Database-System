@@ -1,29 +1,34 @@
 package ui;
-
 import connecter.LoginConnector;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class MapPage extends JFrame implements ActionListener {
     private LoginConnector delegate;
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private JFrame desktop;
+    private JTable MapTable;
+    private JButton addButton, updateButton, deleteButton, backButton;
+    private JScrollPane scrollPane;
     private JPanel panel;
 
     private JButton unlockedArea;
     private JButton lockedArea;
 
+    private DefaultTableModel tableModel;
+
     public MapPage(LoginConnector delegate) {
-        desktop = new JFrame();
+        this.delegate = delegate;
+        desktop = new JFrame("Map Page");
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        panel.setLayout(new GridLayout(0, 1));
-        JLabel label = new JLabel("Map");
-        desktop.setTitle("Map");
+        panel.setLayout(null);
+        JLabel label = new JLabel("Map Page");
         desktop.setSize(WIDTH, HEIGHT);
         addButtonPanel();
         desktop.pack();
@@ -31,8 +36,24 @@ public class MapPage extends JFrame implements ActionListener {
         panel.add(label);
         desktop.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         desktop.setSize(WIDTH, HEIGHT);
+        createMapTable();
         centreOnScreen();
         desktop.setVisible(true);
+    }
+
+    private void createMapTable() {
+        String[] columnNames = {"Map ID", "Map Name", "Foggy Area"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+
+        tableModel.addRow(new Object[]{1, "Map1", "Foggy Area1"});
+        tableModel.addRow(new Object[]{2, "Map2", "Foggy Area2"});
+
+        MapTable = new JTable(tableModel);
+        scrollPane = new JScrollPane(MapTable);
+        MapTable.setFillsViewportHeight(true);
+
+        scrollPane.setBounds(10, 10, 760, 400);
+        panel.add(scrollPane);
     }
 
     private void centreOnScreen() {
@@ -44,9 +65,9 @@ public class MapPage extends JFrame implements ActionListener {
     private void addButtonPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 2));
-        unlockedArea = new JButton("load");
+        unlockedArea = new JButton("unlockedArea");
         unlockedArea.addActionListener(this);
-        lockedArea = new JButton("search");
+        lockedArea = new JButton("lockedArea");
         lockedArea.addActionListener(this);
         buttonPanel.add(unlockedArea);
         buttonPanel.add(lockedArea);
@@ -68,6 +89,7 @@ public class MapPage extends JFrame implements ActionListener {
         desktop.add(secondPanel);
         panel.setVisible(false);
         secondPanel.setVisible(true);
+        unlockedArea(secondPanel);
     }
 
     private void lockedArea() {
@@ -77,6 +99,7 @@ public class MapPage extends JFrame implements ActionListener {
         desktop.add(secondPanel);
         panel.setVisible(false);
         secondPanel.setVisible(true);
+        lockedArea(secondPanel);
     }
 
     private void addBackButton(JPanel subPanel) {
@@ -87,9 +110,74 @@ public class MapPage extends JFrame implements ActionListener {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Show the main panel and hide the second panel
                 subPanel.setVisible(false);
                 panel.setVisible(true);
+            }
+        });
+    }
+
+    private void unlockedArea(JPanel panel) {
+        JButton addButton = new JButton("add");
+        JButton updateButton = new JButton("add");
+        JButton deleteButton = new JButton("add");
+        addButton.setBounds(10, 420, 100, 25);
+        updateButton.setBounds(120, 420, 100, 25);
+        deleteButton.setBounds(230, 420, 100, 25);
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableModel.addRow(new Object[]{"defaultName", 1, 100, 0, null, "Home"});
+            }
+        });
+    }
+
+
+    private void lockedArea(JPanel panel) {
+        JButton addButton = new JButton("add");
+        JButton updateButton = new JButton("add");
+        JButton deleteButton = new JButton("add");
+        addButton.setBounds(10, 420, 100, 25);
+        updateButton.setBounds(120, 420, 100, 25);
+        deleteButton.setBounds(230, 420, 100, 25);
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableModel.addRow(new Object[]{"defaultName", 1, 100, 0, null, "Home"});
+            }
+        });
+    }
+
+    private void createButtons() {
+        addButton = new JButton("Add");
+        updateButton = new JButton("Update");
+        deleteButton = new JButton("Delete");
+        backButton = new JButton("Back");
+
+        addButton.setBounds(10, 420, 100, 25);
+        updateButton.setBounds(120, 420, 100, 25);
+        deleteButton.setBounds(230, 420, 100, 25);
+        backButton.setBounds(340, 420, 100, 25);
+
+        panel.add(addButton);
+        panel.add(updateButton);
+        panel.add(deleteButton);
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableModel.addRow(new Object[]{1,"defaultName","defaultName"});
+            }
+        });
+
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = MapTable.getSelectedRow();
+                if (selectedRow >= 0) {
+                    tableModel.removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(desktop, "Please select a map to delete.");
+                }
             }
         });
     }
