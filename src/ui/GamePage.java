@@ -10,13 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePage extends JFrame implements ActionListener{
-    private JLabel birthday;
-    private JLabel email;
-    private JButton button_Map;
-    private JButton button_Char;
+
     private LoginConnector delegate;
-    private JButton button_Data;
-    private JLabel name;
+    private JButton button_Data, button_Char, button_Map;
+    private JLabel name, email, birthday;
     private JComboBox<String> combobox;
     private JLabel language;
     private JLabel UID;
@@ -89,6 +86,7 @@ public class GamePage extends JFrame implements ActionListener{
         frame.add(panel);
         panel.setLayout(null);
         frame.setVisible(true);
+
     }
     public void close() {
         frame.setVisible(false);

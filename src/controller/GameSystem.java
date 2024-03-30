@@ -41,6 +41,8 @@ public class GameSystem implements LoginConnector {
             mapWindow = new MapPage(this);
             mapWindow.close();
 
+            dbHandler.databaseSetup();
+
         } else {
             loginWindow.handleLoginFailed();
         }

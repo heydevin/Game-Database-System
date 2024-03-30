@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class SavingDataPage extends JFrame {
 
         frame = new JFrame("Select Save Slot");
         frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         panel = new JPanel();
         panel.setLayout(null);
@@ -34,6 +36,43 @@ public class SavingDataPage extends JFrame {
 
         frame.add(panel);
         frame.setVisible(true);
+
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                delegate.switchPage(1);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     private void initializeData() {
