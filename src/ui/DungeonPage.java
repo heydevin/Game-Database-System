@@ -1,56 +1,57 @@
 package ui;
+
 import connecter.LoginConnector;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-public class MapPage extends JFrame implements ActionListener {
+public class DungeonPage extends JFrame implements ActionListener {
     private LoginConnector delegate;
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private JFrame desktop;
-    private JTable MapTable;
-    private JButton addButton, updateButton, deleteButton;
+    private JTable DungeonTable;
+    private JButton addButton, updateButton, deleteButton, backButton;
     private JScrollPane scrollPane;
     private JPanel panel;
 
-    private JButton unlockedArea;
-    private JButton lockedArea;
+
 
     private DefaultTableModel tableModel;
 
-    public MapPage(LoginConnector delegate) {
+    public DungeonPage(LoginConnector delegate) {
         this.delegate = delegate;
-        desktop = new JFrame("Map Page");
+        desktop = new JFrame("Dungeon Page");
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(null);
-        JLabel label = new JLabel("Map Page");
+        JLabel label = new JLabel("Dungeon Page");
         desktop.setSize(WIDTH, HEIGHT);
-        addButtonPanel();
         desktop.pack();
         desktop.add(panel, BorderLayout.CENTER);
         panel.add(label);
         desktop.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         desktop.setSize(WIDTH, HEIGHT);
-        createMapTable();
+        createDungeonTable();
+        createButtons();
         centreOnScreen();
         desktop.setVisible(true);
+
     }
 
-    private void createMapTable() {
-        String[] columnNames = {"Map ID", "Map Name", "Foggy Area"};
+    private void createDungeonTable() {
+        String[] columnNames = {"Dungeon ID", "Dungeon Name", "Item", "Boss Name", "Boss", "MapID"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
-        tableModel.addRow(new Object[]{1, "Map1", "Foggy Area1"});
-        tableModel.addRow(new Object[]{2, "Map2", "Foggy Area2"});
+        tableModel.addRow(new Object[]{1, "Dungeon Name", "Item", "Boss Name", "Boss", "MapID"});
+        tableModel.addRow(new Object[]{2, "Dungeon Name", "Item", "Boss Name", "Boss", "MapID"});
 
-        MapTable = new JTable(tableModel);
-        scrollPane = new JScrollPane(MapTable);
-        MapTable.setFillsViewportHeight(true);
+        DungeonTable = new JTable(tableModel);
+        scrollPane = new JScrollPane(DungeonTable);
+        DungeonTable.setFillsViewportHeight(true);
 
         scrollPane.setBounds(10, 10, 760, 400);
         panel.add(scrollPane);
@@ -62,74 +63,22 @@ public class MapPage extends JFrame implements ActionListener {
         desktop.setLocation((width - desktop.getWidth()) / 2, (height - desktop.getHeight()) / 2);
     }
 
-    private void addButtonPanel() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 2));
-        unlockedArea = new JButton("unlockedArea");
-        unlockedArea.addActionListener(this);
-        lockedArea = new JButton("lockedArea");
-        lockedArea.addActionListener(this);
-        buttonPanel.add(unlockedArea);
-        buttonPanel.add(lockedArea);
-        panel.add(buttonPanel, BorderLayout.WEST);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == unlockedArea) {
-            unlockedArea();
-        } else if (e.getSource() == lockedArea) {
-            lockedArea();
-        }
-    }
-
-    private void unlockedArea() {
-        JPanel secondPanel = new JPanel();
-        secondPanel.setLayout(null);
-        addBackButton(secondPanel);
-        desktop.add(secondPanel);
-        panel.setVisible(false);
-        secondPanel.setVisible(true);
-        createButtons();
-    }
-
-    private void lockedArea() {
-        JPanel secondPanel = new JPanel();
-        secondPanel.setLayout(null);
-        addBackButton(secondPanel);
-        desktop.add(secondPanel);
-        panel.setVisible(false);
-        secondPanel.setVisible(true);
-        createButtons();
-    }
-
-    private void addBackButton(JPanel subPanel) {
-
-        JButton backButton = new JButton("Back");
-        subPanel.add(backButton);
-        backButton.setBounds(660, 80, 80, 25);
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subPanel.setVisible(false);
-                panel.setVisible(true);
-            }
-        });
-    }
-
-
 
     private void createButtons() {
         addButton = new JButton("Add");
         updateButton = new JButton("Update");
         deleteButton = new JButton("Delete");
+        backButton = new JButton("Back");
 
         addButton.setBounds(10, 420, 100, 25);
         updateButton.setBounds(120, 420, 100, 25);
         deleteButton.setBounds(230, 420, 100, 25);
+        backButton.setBounds(340, 420, 100, 25);
 
         panel.add(addButton);
         panel.add(updateButton);
         panel.add(deleteButton);
+        panel.add(backButton);
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,7 +90,7 @@ public class MapPage extends JFrame implements ActionListener {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = MapTable.getSelectedRow();
+                int selectedRow = DungeonTable.getSelectedRow();
                 if (selectedRow >= 0) {
                     tableModel.removeRow(selectedRow);
                 } else {
@@ -157,6 +106,8 @@ public class MapPage extends JFrame implements ActionListener {
     public void open() {
         desktop.setVisible(true);
     }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
-
-
