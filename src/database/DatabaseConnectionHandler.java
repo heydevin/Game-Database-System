@@ -1,5 +1,6 @@
 package database;
 
+import entity.User;
 import entity.UserAccountModel;
 import util.PrintablePreparedStatement;
 
@@ -64,7 +65,7 @@ public class DatabaseConnectionHandler {
         dropBranchTableIfExists();
 
         try {
-            String query = "CREATE TABLE userOwnsAccount (Uid integer PRIMARY KEY, Name varchar2(50), Birthday Date, Email varchar2(50), Password integer)";
+            String query = "CREATE TABLE user_table_1 (email varchar2(50) PRIMARY KEY, name varchar2(50) NOT NULL, birthday Date)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -72,11 +73,36 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
 
-        UserAccountModel UserModel1 = new UserAccountModel("Devin", Date.valueOf("2010-10-10"), "Devin@gmail.com", 8888, 12345678);
+        User UserModel1 = new User("Devin", "Devin@gmail.com", Date.valueOf("2009-9-19"));
         insertUserModel(UserModel1);
 
-        UserAccountModel UserModel2 = new UserAccountModel("Kevin", Date.valueOf("2009-9-19"), "Kevin@gmail.com", 9999, 99995678);
+        User UserModel2 = new User("Kevin", "Kevin@gmail.com", Date.valueOf("2009-9-19"));
         insertUserModel(UserModel2);
+    }
+
+
+    public User[] getUserInfo() {
+        ArrayList<User> result = new ArrayList<User>();
+
+        try {
+            String query = "SELECT * FROM user_table_1";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                User model = new User(rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getDate("birthday"));
+                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new User[result.size()]);
     }
 
     private void dropBranchTableIfExists() {
@@ -86,10 +112,8 @@ public class DatabaseConnectionHandler {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                if(rs.getString(1).toLowerCase().equals("branch")) {
-                    ps.execute("DROP TABLE branch");
-                    break;
-                }
+                ps.execute("DROP TABLE user_table_1");
+                break;
             }
 
             rs.close();
@@ -99,24 +123,20 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void insertUserModel(UserAccountModel model) {
+    public void insertUserModel(User model) {
         try {
-            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO user_table_1 VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, model.getUID());
+            ps.setString(1, model.getEmail());
             ps.setString(2, model.getName());
             ps.setDate(3, model.getBirthday());
-            ps.setString(4, model.getEmail());
-            ps.setInt(5, model.getPassword());
 //            if (model.getPhoneNumber() == 0) {
 //                ps.setNull(5, java.sql.Types.INTEGER);
 //            } else {
 //                ps.setInt(5, model.getPhoneNumber());
 //            }
-
             ps.executeUpdate();
             connection.commit();
-
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());

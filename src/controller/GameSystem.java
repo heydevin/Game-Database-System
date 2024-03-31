@@ -2,6 +2,7 @@ package controller;
 
 import connecter.LoginConnector;
 import database.DatabaseConnectionHandler;
+import entity.User;
 import ui.*;
 
 public class GameSystem implements LoginConnector {
@@ -42,7 +43,7 @@ public class GameSystem implements LoginConnector {
             mapWindow.close();
             // incomplete
             dbHandler.databaseSetup();
-
+            this.showUser();
         } else {
             loginWindow.handleLoginFailed();
         }
@@ -73,6 +74,20 @@ public class GameSystem implements LoginConnector {
             savingDataWindow.close();
             characterWindow.close();
             mapWindow.open();  // OPEN!!
+        }
+    }
+
+    public void showUser() {
+        User[] models = dbHandler.getUserInfo();
+
+        for (int i = 0; i < models.length; i++) {
+            User model = models[i];
+
+            // simplified output formatting; truncation may occur
+            System.out.printf("%-10.10s", model.getName());
+            System.out.printf("%-20.20s", model.getEmail());
+            System.out.printf("%-20.20s", model.getBirthday());
+            System.out.println();
         }
     }
 }

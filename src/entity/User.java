@@ -1,11 +1,13 @@
 package entity;
 
+import java.sql.Date;
+
 public class User {
     private String name;
     private String email;
-    private String birthday;
+    private Date birthday;
 
-    public User(String name, String email, String birthday){
+    public User(String name, String email, Date birthday){
         this.name = name;
         this.email = email;
         this.birthday = birthday;
@@ -19,7 +21,7 @@ public class User {
         return email;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 }

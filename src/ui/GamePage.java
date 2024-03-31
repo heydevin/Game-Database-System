@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 public class GamePage extends JFrame implements ActionListener{
 
@@ -50,7 +51,7 @@ public class GamePage extends JFrame implements ActionListener{
         panel.add(combobox);
 
         // user info display section
-        user = new User("Devin", "Devin@gmail.com", "2024-03-27");
+        user = new User("Devin", "Devin@gmail.com", Date.valueOf("2024-03-27"));
 
         name = new JLabel("Name: " + user.getName());
         name.setFont(new Font("Arial", Font.PLAIN, 30));
