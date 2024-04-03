@@ -113,7 +113,7 @@ public class CharacterPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                delegate.switchPage(1);
             }
         });
 
