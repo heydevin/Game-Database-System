@@ -23,28 +23,9 @@ CREATE TABLE SavingData(
 );
 
 
-CREATE TABLE Store (
-                       DataID CHAR(10),
-                       UID INT,
-                       Cname VARCHAR(50),
-                       Playtime INT,
-                       PRIMARY KEY (DataID, UID, Cname),
-                       FOREIGN KEY (DataID, UID) REFERENCES SavingData(DataID, UID),
-                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname)
-);
+CREATE TABLE Roles(
+                      Rname VARCHAR(50) PRIMARY KEY);
 
-CREATE TABLE Characters_Stats(
-                                 HP INTEGER,
-                                 Level INTEGER PRIMARY KEY);
-CREATE TABLE Characters_Info(
-                                Level INTEGER,
-                                Money INTEGER,
-                                Cname VARCHAR(50) PRIMARY KEY,
-                                Rname VARCHAR(50),
-                                MapID CHAR(10),
-                                currLoc CHAR(20),
-                                FOREIGN KEY(MapID) REFERENCES Map(MapID),
-                                FOREIGN KEY(Rname) REFERENCES Roles(Rname));
 
 CREATE TABLE Weapons(
                         WeaponID CHAR(10),
@@ -52,11 +33,6 @@ CREATE TABLE Weapons(
                         Price INTEGER,
                         Rname VARCHAR(50),
                         FOREIGN KEY(Rname) REFERENCES Roles(Rname) on DELETE CASCADE);
-
-CREATE TABLE Roles(
-                      Rname VARCHAR(50) PRIMARY KEY ,
-                      Cname VARCHAR(50),
-                      FOREIGN KEY(Cname) REFERENCES Characters_Info(Cname) on DELETE CASCADE);
 
 CREATE TABLE Map(
                     MapID CHAR(10) PRIMARY KEY,
@@ -73,7 +49,7 @@ CREATE TABLE UnlockArea(
                            MapID CHAR(10),
                            MapName VARCHAR(50),
                            CheckPoint CHAR(10),
-                           PRIMARY KEY(MapID));
+                           FOREIGN KEY(MapID) REFERENCES Map(MapID));
 
 CREATE TABLE Coordinate(
                            X_Coord CHAR(10),
@@ -114,6 +90,33 @@ CREATE TABLE DungeonInfo(
                             BossID CHAR(10),
                             MapID CHAR(10),
                             FOREIGN KEY(MapID) REFERENCES Map(MapID));
+
+CREATE TABLE Characters_Stats(
+                                 HP INTEGER,
+                                 Level INTEGER PRIMARY KEY);
+
+CREATE TABLE Characters_Info(
+                                Level INTEGER,
+                                Money INTEGER,
+                                Cname VARCHAR(50) PRIMARY KEY,
+                                Rname VARCHAR(50),
+                                MapID CHAR(10),
+                                currLoc CHAR(20),
+                                FOREIGN KEY(MapID) REFERENCES Map(MapID),
+                                FOREIGN KEY(Rname) REFERENCES Roles(Rname));
+
+CREATE TABLE Store (
+                       DataID CHAR(10),
+                       UID INT,
+                       Cname VARCHAR(50),
+                       Playtime INT,
+                       PRIMARY KEY (DataID, UID, Cname),
+                       FOREIGN KEY (DataID, UID) REFERENCES SavingData(DataID, UID),
+                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname));
+
+
+
+
 
 
 INSERT INTO User (Email, Name, Birthday)
@@ -188,11 +191,11 @@ VALUES ('W000000001', 10, 100, 'role1' );
 INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
 VALUES ('W000000001', 10, 100, 'role1' );
 
-INSERT INTO Roles (Rname, Cname) VALUES ('role1', 'Character1');
-INSERT INTO Roles (Rname, Cname) VALUES ('role2', 'Character2');
-INSERT INTO Roles (Rname, Cname) VALUES ('role3', 'Character3');
-INSERT INTO Roles (Rname, Cname) VALUES ('role4', 'Character4');
-INSERT INTO Roles (Rname, Cname) VALUES ('role5', 'Character5');
+INSERT INTO Roles (Rname) VALUES ('role1');
+INSERT INTO Roles (Rname) VALUES ('role2');
+INSERT INTO Roles (Rname) VALUES ('role3');
+INSERT INTO Roles (Rname) VALUES ('role4');
+INSERT INTO Roles (Rname) VALUES ('role5');
 
 INSERT INTO Map(MapID, MapName) VALUES ('Map0000001', 'Map1');
 INSERT INTO Map(MapID, MapName) VALUES ('Map0000002', 'Map2');
@@ -286,5 +289,4 @@ VALUES ('D000000003', 'Dungeon3', 'Item3', 'BOSS3', 'B000000003', 'MAP0000003');
 INSERT INTO DungeonInfo (dungeonID, dungeonName, Item, Bname, BossID, MapID)
 VALUES ('D000000004', 'Dungeon4', 'Item4', 'BOSS4', 'B000000004', 'MAP0000004');
 INSERT INTO DungeonInfo (dungeonID, dungeonName, Item, Bname, BossID, MapID)
-VALUES ('D000000005' ||
-        '', 'Dungeon5', 'Item5', 'BOSS5', 'B000000005', 'MAP0000005');
+VALUES ('D000000005', 'Dungeon5', 'Item5', 'BOSS5', 'B000000005', 'MAP0000005');
