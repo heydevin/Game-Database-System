@@ -1,5 +1,4 @@
--- initializing sql
-
+-- create table part:
 CREATE TABLE UserTable(
     Email VARCHAR(50) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
@@ -114,20 +113,17 @@ CREATE TABLE Store (
                        FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID),
                        FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname));
 
+-- insert into part:
 
-
-
-
-
-INSERT INTO User (Email, Name, Birthday)
+INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test1@gmail.com','Test User 1', TO_DATE('01-01-2001', 'dd-mm-yyyy'));
-INSERT INTO User (Email, Name, Birthday)
+INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test2@gmail.com','Test User 2', TO_DATE('02-02-2002', 'dd-mm-yyyy'));
-INSERT INTO User (Email, Name, Birthday)
+INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test3@gmail.com','Test User 3', TO_DATE('03-03-2003', 'dd-mm-yyyy'));
-INSERT INTO User (Email, Name, Birthday)
+INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test4@gmail.com','Test User 4', TO_DATE('04-04-2004', 'dd-mm-yyyy'));
-INSERT INTO User (Email, Name, Birthday)
+INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test5@gmail.com','Test User 5', TO_DATE('05-05-2005', 'dd-mm-yyyy'));
 
 INSERT INTO Account (UserID, Password, Language, Email)
@@ -152,32 +148,32 @@ VALUES (4, 4, TO_DATE('04-APR-2022', 'DD-MON-YYYY'));
 INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (5, 5, TO_DATE('05-MAY-2022', 'DD-MON-YYYY'));
 
-INSERT INTO Store (DataID, UID, Cname, Playtime)
+INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (1, 1, 'Character1', 5);
-INSERT INTO Store (DataID, UID, Cname, Playtime)
+INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (2, 2, 'Character2', 10);
-INSERT INTO Store (DataID, UID, Cname, Playtime)
+INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (3, 3, 'Character3', 15);
-INSERT INTO Store (DataID, UID, Cname, Playtime)
+INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (4, 4, 'Character4', 20);
-INSERT INTO Store (DataID, UID, Cname, Playtime)
+INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (5, 5, 'Character5', 25);
 
-INSERT INTO Characters_Stats (HP, Level) VALUES (1, 100);
-INSERT INTO Characters_Stats (HP, Level) VALUES (2, 150);
-INSERT INTO Characters_Stats (HP, Level) VALUES (3, 200);
-INSERT INTO Characters_Stats (HP, Level) VALUES (4, 250);
-INSERT INTO Characters_Stats (HP, Level) VALUES (5, 300);
+INSERT INTO Characters_Stats (HP, charLevel) VALUES (1, 100);
+INSERT INTO Characters_Stats (HP, charLevel) VALUES (2, 150);
+INSERT INTO Characters_Stats (HP, charLevel) VALUES (3, 200);
+INSERT INTO Characters_Stats (HP, charLevel) VALUES (4, 250);
+INSERT INTO Characters_Stats (HP, charLevel) VALUES (5, 300);
 
-INSERT INTO Characters_Info (Level, Money, Cname, Rname, MapID, currLoc)
+INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
 VALUES (1, 100, 'character1', 'role1', 'M000000001', 'x000000001y000000001');
-INSERT INTO Characters_Info (Level, Money, Cname, Rname, MapID, currLoc)
+INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
 VALUES (2, 200, 'character2', 'role2', 'M000000002', 'x000000002y000000002');
-INSERT INTO Characters_Info (Level, Money, Cname, Rname, MapID, currLoc)
+INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
 VALUES (3, 300, 'character3', 'role3', 'M000000003', 'x000000003y000000003');
-INSERT INTO Characters_Info (Level, Money, Cname, Rname, MapID, currLoc)
+INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
 VALUES (4, 400, 'character4', 'role4', 'M000000004', 'x000000004y000000004');
-INSERT INTO Characters_Info (Level, Money, Cname, Rname, MapID, currLoc)
+INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
 VALUES (5, 5100, 'character5', 'role5', 'M000000005', 'x000000005y000000005');
 
 INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)

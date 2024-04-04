@@ -71,9 +71,9 @@ public class DatabaseConnectionHandler {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                User model = new User(rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getDate("birthday"));
+                User model = new User(rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getDate("Birthday"));
                 result.add(model);
             }
 
@@ -84,6 +84,29 @@ public class DatabaseConnectionHandler {
         }
 
         return result.toArray(new User[result.size()]);
+    }
+
+    public Account[] getAccountInfo() {
+        ArrayList<Account> result = new ArrayList<Account>();
+        try {
+            String query = "SELECT * FROM ACCOUNT";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Account model = new Account(rs.getInt("UserID"),
+                        rs.getString("Password"),
+                        rs.getString("Language"),
+                        rs.getString("Email"));
+                result.add(model);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new Account[result.size()]);
     }
 
     private void dropBranchTableIfExists() {
@@ -110,7 +133,7 @@ public class DatabaseConnectionHandler {
             ps.close();
             System.out.println("Drop finished");
         } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
     }
 
@@ -121,11 +144,6 @@ public class DatabaseConnectionHandler {
             ps.setString(1, model.getEmail());
             ps.setString(2, model.getName());
             ps.setDate(3, model.getBirthday());
-//            if (model.getPhoneNumber() == 0) {
-//                ps.setNull(5, java.sql.Types.INTEGER);
-//            } else {
-//                ps.setInt(5, model.getPhoneNumber());
-//            }
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -135,6 +153,36 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void insertAccountModel(Account model) {
+        try {
+            String query = "INSERT INTO ACCOUNT VALUES (?,?,?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, model.getUID());
+            ps.setString(2, model.getPassword());
+            ps.setString(3, model.getLanguage());
+            ps.setString(4, model.getEmail());
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void initializeUsers() {
+        User UserModel1 = new User("Desheng", "Devin@gmail.com", Date.valueOf("2000-1-10"));
+        User UserModel2 = new User("Xiran", "Xiran@gmail.com", Date.valueOf("2000-1-01"));
+        User UserModel3 = new User("James", "James@gmail.com", Date.valueOf("2000-1-03"));
+
+        insertUserModel(UserModel1);
+        insertUserModel(UserModel2);
+        insertUserModel(UserModel3);
+
+        Account AccountModel1 = new Account(100000001, "p","Chinese", UserModel1.getEmail());
+
+        insertAccountModel(AccountModel1);
+    }
     public void databaseSetup() {
         dropBranchTableIfExists();
 
@@ -385,14 +433,5 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             System.out.println("Error in Creating Store Table");
         }
-
-//        User UserModel1 = new User("Desheng", "Devin@gmail.com", Date.valueOf("2000-1-10"));
-//        User UserModel2 = new User("Xiran", "Xiran@gmail.com", Date.valueOf("2000-1-01"));
-//        User UserModel3 = new User("James", "James@gmail.com", Date.valueOf("2000-1-03"));
-//
-//        insertUserModel(UserModel1);
-//        insertUserModel(UserModel2);
-//        insertUserModel(UserModel3);
-
     }
 }

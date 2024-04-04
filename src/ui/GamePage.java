@@ -1,7 +1,6 @@
 package ui;
 
 import connecter.LoginConnector;
-import controller.GameSystem;
 import entity.Account;
 import entity.User;
 
@@ -10,7 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class GamePage extends JFrame implements ActionListener{
 
@@ -24,102 +24,27 @@ public class GamePage extends JFrame implements ActionListener{
     private User user;
     private JFrame frame, userFrame, accountFrame;
     private JPanel panel, userPanel, accountPanel;
-    private JLabel label_email, label_password, imageLabel, imageAccLabel;
+    private JLabel label_email, label_password, imageLabel, imageLabelBH, imageLabelLand;
     private JTextField textField_email, textField_password;
     private DefaultTableModel tableModel;
     private JTable userTable;
     private JScrollPane scrollPane;
     private int selectedIndex;
 
-    private final ImageIcon image, imageAcc;
+    private final ImageIcon imageSky, imageBlackHole, imageLand;
 
     public GamePage(LoginConnector delegate) {
         this.delegate = delegate;
-        image = new ImageIcon("src/image/SkyView.jpg");
-//        Set up account should use sql instead of manually typed in values.
-        account = new Account(100000000, "123","Chinese");
-        frame = new JFrame("Main Page");
-        frame.setSize(1280, 720);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        imageSky = new ImageIcon("src/image/SkyView.jpg");
+        imageBlackHole = new ImageIcon("src/image/black.jpg");
+        imageLand = new ImageIcon("src/image/Land.jpg");
 
-        panel = new JPanel();
-
-        UID = new JLabel("UID:" + account.getUID());
-        UID.setFont(new Font("Arial", Font.PLAIN, 20));
-        UID.setBounds(60, 660, 300, 20);
-        panel.add(UID);
-
-//        Should be selectable text field
-        language = new JLabel("Language");
-        language.setFont(new Font("Arial", Font.PLAIN, 25));
-        language.setBounds(1080, 100, 300, 30);
-        panel.add(language);
-
-        combobox = new JComboBox<String>(new String[]{"Chinese", "English", "Japanese"});
-        combobox.setBounds(1080, 140, 114, 30);
-        panel.add(combobox);
-
-        // user info display section
-        user = new User("Devin", "Devin@gmail.com", Date.valueOf("2024-03-27"));
-
-        name = new JLabel("Name: " + user.getName());
-        name.setFont(new Font("Arial", Font.PLAIN, 30));
-        name.setBounds(160, 180, 300, 30);
-        panel.add(name);
-
-        email = new JLabel("Email: " + user.getEmail());
-        email.setFont(new Font("Arial", Font.PLAIN, 30));
-        email.setBounds(160, 220, 350, 35);
-        panel.add(email);
-
-        birthday = new JLabel("Birthday: " + user.getBirthday());
-        birthday.setFont(new Font("Arial", Font.PLAIN, 30));
-        birthday.setBounds(160, 260, 300, 32);
-        panel.add(birthday);
-
-        // button display section
-        button_Data = new JButton("Data");
-        button_Data.setBounds(300, 440, 150, 100);
-        button_Data.addActionListener(this);
-        panel.add(button_Data);
-
-        button_Char = new JButton("Characters");
-        button_Char.setBounds(550, 440, 150, 100);
-        button_Char.addActionListener(this);
-        panel.add(button_Char);
-
-        button_Map = new JButton("Map");
-        button_Map.setBounds(800, 440, 150, 100);
-        button_Map.addActionListener(this);
-        panel.add(button_Map);
-
-        centreOnScreen(frame);
-        frame.add(panel);
-        panel.setLayout(null);
-        frame.setVisible(false);
-
-        // Frame 2
-        // Starts
-        // From here
         userFrame = new JFrame("Select User");
         userFrame.setSize(500, 400);
         userFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         userPanel = new JPanel();
         userPanel.setLayout(null);
-
-//        String[] columnNames = {"Name", "Birthday", "Email"};
-//        tableModel = new DefaultTableModel(columnNames, 0);
-//
-//        tableModel.addRow(new Object[]{"Devin", "2000-1-1", "Town@gmailc.om"});
-//        tableModel.addRow(new Object[]{"Kevin", "2000-10-01", "Forest@qq.com"});
-//
-//        userTable = new JTable(tableModel);
-//        scrollPane = new JScrollPane(userTable);
-//        userTable.setFillsViewportHeight(true);
-
-//        scrollPane.setBounds(10, 10, 460, 100);
-//        userPanel.add(scrollPane);
 
         userCombobox = new JComboBox<String>(new String[]{"Desheng", "Xiran", "James"});
         userCombobox.setBounds(75, 120, 105, 40);
@@ -140,22 +65,93 @@ public class GamePage extends JFrame implements ActionListener{
             }
         });
 
-        imageAcc = new ImageIcon("src/image/black.jpg");
-        imageAcc.setImage(imageAcc.getImage().getScaledInstance(960,405,Image.SCALE_DEFAULT));
-        imageAccLabel = new JLabel(imageAcc);
-        imageAccLabel.setBounds(0, 0, 540, 380);
-        userPanel.add(imageAccLabel);
+        imageBlackHole.setImage(imageBlackHole.getImage().getScaledInstance(960,405,Image.SCALE_DEFAULT));
+        imageLabelBH = new JLabel(imageBlackHole);
+        imageLabelBH.setBounds(0, 0, 540, 380);
+        userPanel.add(imageLabelBH);
 
         centreOnScreen(userFrame);
         userFrame.add(userPanel);
         userFrame.setVisible(true);
     }
 
+    private void setUpMainPage(User chosenUser, Account accountOwnByUser) {
+        //        Set up account should use sql instead of manually typed in values.
+        user = chosenUser;
+        account = accountOwnByUser;
+
+        frame = new JFrame("Game Database System");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        panel = new JPanel();
+        panel.setLayout(null);
+
+        name = new JLabel("Welcome, " + user.getName() + "!");
+        name.setFont(new Font("Arial", Font.BOLD, 40));
+        name.setForeground(new Color(96, 96, 96));
+        name.setBounds(200, 130, 400, 45);
+        panel.add(name);
+
+        birthday = new JLabel("Birthday: " + user.getBirthday());
+        birthday.setFont(new Font("Arial", Font.PLAIN, 30));
+        birthday.setForeground(new Color(102, 178, 255));
+        birthday.setBounds(10, 0, 300, 35);
+        panel.add(birthday);
+
+        UID = new JLabel("UID:" + account.getUID());
+        UID.setFont(new Font("Arial", Font.PLAIN, 30));
+        UID.setForeground(new Color(102, 178, 255));
+        UID.setBounds(10, 530, 300, 35);
+        panel.add(UID);
+
+        language = new JLabel("Language: " + account.getLanguage());
+        language.setFont(new Font("Arial", Font.PLAIN, 30));
+        language.setForeground(new Color(102, 178, 255));
+        language.setBounds(510, 0, 300, 35);
+        panel.add(language);
+
+//        combobox = new JComboBox<String>(new String[]{"Chinese", "English", "Japanese"});
+//        combobox.setBounds(1080, 140, 114, 30);
+//        panel.add(combobox);
+
+        // user info display section
+//        email = new JLabel("Email: " + user.getEmail());
+//        email.setFont(new Font("Arial", Font.BOLD, 30));
+//        email.setForeground(Color.WHITE);
+//        email.setBounds(160, 220, 350, 35);
+//        panel.add(email);
+
+        // button display section
+        button_Data = new JButton("Data");
+        button_Data.setBounds(90, 280, 150, 100);
+        button_Data.addActionListener(this);
+        panel.add(button_Data);
+
+        button_Char = new JButton("Characters");
+        button_Char.setBounds(button_Data.getX()+230, button_Data.getY(), 150, 100);
+        button_Char.addActionListener(this);
+        panel.add(button_Char);
+
+        button_Map = new JButton("Map");
+        button_Map.setBounds(button_Char.getX()+230, button_Data.getY(), 150, 100);
+        button_Map.addActionListener(this);
+        panel.add(button_Map);
+
+//        imageLand.setImage(imageLand.getImage().getScaledInstance(1280,603,Image.SCALE_DEFAULT));
+//        imageLabelLand = new JLabel(imageLand);
+//        imageLabelLand.setBounds(0, 0, 1280, 603);
+//        panel.add(imageLabelLand);
+
+        centreOnScreen(frame);
+        frame.add(panel);
+        frame.setVisible(false);
+    }
+
     private void setUpAccountFrame(String user) {
-        System.out.println(user);
         accountFrame = new JFrame("Account Login");
         accountFrame.setSize(540, 360);
-        accountFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        accountFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         accountPanel = new JPanel();
         accountPanel.setLayout(null);
@@ -174,7 +170,7 @@ public class GamePage extends JFrame implements ActionListener{
         accountPanel.add(label_password);
 
         // enter the email here from sql
-        textField_email = new JTextField(delegate.getUserInfoFromSQL("Email", user));
+        textField_email = new JTextField(delegate.getUserFromSQL(user).getEmail());
         textField_email.setBounds(label_email.getX() + label_email.getWidth() + 20,
                 label_email.getY(), 120, label_email.getHeight());
         accountPanel.add(textField_email);
@@ -190,20 +186,61 @@ public class GamePage extends JFrame implements ActionListener{
         button_login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(textField_password.getText().equals(delegate.getUserInfoFromSQL("Name",user))){
+                if(textField_password.getText().equals(delegate.getAccountFromSQL(delegate.getUserFromSQL(user).getEmail()).getPassword())){
                     accountFrame.setVisible(false);
+                    setUpMainPage(delegate.getUserFromSQL(user), delegate.getAccountFromSQL(delegate.getUserFromSQL(user).getEmail()));
                     frame.setVisible(true);
+                } else {
+                    System.out.println("Incorrect Password");
                 }
             }
         });
         accountPanel.add(button_login);
 
-        image.setImage(image.getImage().getScaledInstance(540,360,Image.SCALE_DEFAULT));
-        imageLabel = new JLabel(image);
+        imageSky.setImage(imageSky.getImage().getScaledInstance(540,360,Image.SCALE_DEFAULT));
+        imageLabel = new JLabel(imageSky);
         imageLabel.setBounds(0, 0, 540, 360);
         accountPanel.add(imageLabel);
 
         centreOnScreen(accountFrame);
+
+        accountFrame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                userFrame.setVisible(true);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+
         accountFrame.add(accountPanel);
         accountFrame.setVisible(true);
     }
@@ -215,10 +252,6 @@ public class GamePage extends JFrame implements ActionListener{
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        LoginConnector delegate = new GameSystem();
-        new GamePage(delegate);
-    }
 
     private void centreOnScreen(JFrame setFrame) {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;

@@ -4,6 +4,7 @@ import connecter.LoginConnector;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -30,6 +31,10 @@ public class CharacterPage extends JFrame {
 
         createCharacterTable();
         createButtons();
+
+        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        frame.setLocation((width - frame.getWidth()) / 2, (height - frame.getHeight()) / 2);
 
         frame.add(panel);
         frame.setVisible(true);
