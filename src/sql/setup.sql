@@ -160,22 +160,23 @@ VALUES (4, 4, 'Character4', 20);
 INSERT INTO Store (DataID, UserID, Cname, Playtime)
 VALUES (5, 5, 'Character5', 25);
 
-INSERT INTO Characters_Stats (HP, charLevel) VALUES (1, 100);
-INSERT INTO Characters_Stats (HP, charLevel) VALUES (2, 150);
-INSERT INTO Characters_Stats (HP, charLevel) VALUES (3, 200);
-INSERT INTO Characters_Stats (HP, charLevel) VALUES (4, 250);
-INSERT INTO Characters_Stats (HP, charLevel) VALUES (5, 300);
+INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (100, 600, 1);
+INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (200, 660, 2);
+INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (300, 700, 3);
+INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (400, 760, 4);
+INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (500, 6000, 5);
 
-INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
-VALUES (1, 100, 'character1', 'role1', 'M000000001', 'x000000001y000000001');
-INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
-VALUES (2, 200, 'character2', 'role2', 'M000000002', 'x000000002y000000002');
-INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
-VALUES (3, 300, 'character3', 'role3', 'M000000003', 'x000000003y000000003');
-INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
-VALUES (4, 400, 'character4', 'role4', 'M000000004', 'x000000004y000000004');
-INSERT INTO Characters_Info (charLevel, Money, Cname, Rname, MapID, currLoc)
-VALUES (5, 5100, 'character5', 'role5', 'M000000005', 'x000000005y000000005');
+
+INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
+VALUES ('character1', 1, 100, 'role1', 'M000000001', 'x000000001y000000001', 1, 1);
+INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
+VALUES ('character2', 2, 200, 'role2', 'M000000002', 'x000000002y000000002', 2, 2);
+INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
+VALUES ('character3', 3, 300, 'role3', 'M000000003', 'x000000003y000000003', 3, 3);
+INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
+VALUES ('character4', 4, 400, 'role4', 'M000000004', 'x000000004y000000004', 4, 4);
+INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
+VALUES ('character5', 5, 500, 'role5', 'M000000005', 'x000000005y000000005', 5, 5);
 
 INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
 VALUES ('W000000001', 10, 100, 'role1' );
