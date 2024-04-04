@@ -1,6 +1,7 @@
 package ui;
 
 import connecter.LoginConnector;
+import entity.CharacterInfo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import util.PrintablePreparedStatement;
+import java.util.List;
 
 public class CharacterPage extends JFrame {
     private LoginConnector delegate;
@@ -16,6 +21,12 @@ public class CharacterPage extends JFrame {
     private JTable characterTable;
     private JButton addButton, updateButton, deleteButton, backButton;
     private JScrollPane scrollPane;
+    private static final String EXCEPTION_TAG = "[EXCEPTION]";
+    private static final String WARNING_TAG = "[WARNING]";
+
+    private Connection connection = null;
+
+
     private DefaultTableModel tableModel;
 
     public CharacterPage(LoginConnector delegate) {
@@ -103,12 +114,47 @@ public class CharacterPage extends JFrame {
         panel.add(deleteButton);
         panel.add(backButton);
 
+
+        JLabel levelText = new JLabel("level");
+        levelText.setBounds(300, 45, 60, 25);
+        JTextField level = new JTextField(20);
+        level.setBounds(300, 80, 60, 25);
+        JLabel moneyText = new JLabel("money");
+        moneyText.setBounds(370, 45, 60, 25);
+        JTextField money = new JTextField(20);
+        money.setBounds(370, 80, 60, 25);
+        JLabel cnameText = new JLabel("character name");
+        cnameText.setBounds(440, 45, 60, 25);
+        JTextField cname = new JTextField(20);
+        cname.setBounds(440, 80, 60, 25);
+        JLabel rnameText = new JLabel("role name");
+        rnameText.setBounds(510, 45, 60, 25);
+        JTextField rname = new JTextField(20);
+        rname.setBounds(510, 80, 60, 25);
+        JLabel mapIDText = new JLabel("map ID");
+        mapIDText.setBounds(580, 45, 60, 25);
+        JTextField mapID = new JTextField(20);
+        mapID.setBounds(580, 80, 60, 25);
+        JLabel currLocText = new JLabel("current location");
+        currLocText.setBounds(650, 45, 60, 25);
+        JTextField currLoc = new JTextField(20);
+        currLoc.setBounds(650, 80, 60, 25);
+
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.addRow(new Object[]{"defaultName", 1, 100, 0, null, "Home"});
+                int levelInput = Integer.parseInt(level.getText());
+                int moneyInput = Integer.parseInt(money.getText());
+                String cnameInput = cname.getText();
+                String rnameInput = rname.getText();
+                String mapIdInput = mapID.getText();
+                String currLocInput = currLoc.getText();
+                CharacterInfo characterInfo = new CharacterInfo(levelInput,moneyInput,cnameInput,rnameInput,mapIdInput,currLocInput);
+                insertCharacter_Info(characterInfo);
             }
         });
+
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -129,6 +175,35 @@ public class CharacterPage extends JFrame {
             }
         });
     }
+
+    public void insertCharacter_Info(CharacterInfo characterInfo) {
+        try {
+            String query = "INSERT INTO Character_Info VALUES (?,?,?,?,?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, characterInfo.getLevel());
+            ps.setInt(2, characterInfo.getMoney());
+            ps.setString(3, characterInfo.getCharacterName());
+            ps.setString(4, characterInfo.getRoleName());
+            ps.setString(5, characterInfo.getMapID());
+            ps.setString(6, characterInfo.getCurrLoc());
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    private void rollbackConnection() {
+        try  {
+            connection.rollback();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
     public void close() {
         frame.setVisible(false);
     }
@@ -137,4 +212,3 @@ public class CharacterPage extends JFrame {
         frame.setVisible(true);
     }
 }
-
