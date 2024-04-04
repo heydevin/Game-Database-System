@@ -102,4 +102,8 @@ public class GameSystem implements LoginConnector {
         }
         return one;
     }
+
+    public void insertAccountIntoSQL(Account account) {
+        dbHandler.insertAccountModel(account);
+    }
 }

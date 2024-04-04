@@ -61,7 +61,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-
     public User[] getUserInfo() {
         ArrayList<User> result = new ArrayList<User>();
 

@@ -9,5 +9,5 @@ public interface LoginConnector {
 
     User getUserFromSQL(String name);
     Account getAccountFromSQL(String email);
-
+    void insertAccountIntoSQL(Account account);
 }

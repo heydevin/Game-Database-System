@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class GamePage extends JFrame implements ActionListener{
 
     private LoginConnector delegate;
@@ -22,19 +24,21 @@ public class GamePage extends JFrame implements ActionListener{
     private JLabel UID;
     private Account account;
     private User user;
-    private JFrame frame, userFrame, accountFrame;
-    private JPanel panel, userPanel, accountPanel;
-    private JLabel label_email, label_password, imageLabel, imageLabelBH, imageLabelLand;
+    private JFrame frame, userFrame, accountFrame, createFrame;
+    private JPanel panel, userPanel, accountPanel, createPanel;
+    private JLabel label_email, label_password, imageLabel, imageLabelBH, imageLabelLand, label_language;
     private JTextField textField_email, textField_password;
     private DefaultTableModel tableModel;
     private JTable userTable;
     private JScrollPane scrollPane;
     private int selectedIndex;
-
     private final ImageIcon imageSky, imageBlackHole, imageLand;
+    private JButton button_create;
+    private int userValueID;
 
     public GamePage(LoginConnector delegate) {
         this.delegate = delegate;
+        userValueID = 10000;
         imageSky = new ImageIcon("src/image/SkyView.jpg");
         imageBlackHole = new ImageIcon("src/image/black.jpg");
         imageLand = new ImageIcon("src/image/Land.jpg");
@@ -58,10 +62,14 @@ public class GamePage extends JFrame implements ActionListener{
         button_Choose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                selectedIndex = userCombobox.getSelectedIndex();
-                setUpAccountFrame(userCombobox.getItemAt(selectedIndex));
+                String user = userCombobox.getItemAt(userCombobox.getSelectedIndex());
+                if(delegate.getAccountFromSQL(delegate.getUserFromSQL(user).getEmail()) == null){
+                    showMessageDialog(accountFrame, "You do not have account, please create one", "Notification", JOptionPane.WARNING_MESSAGE);
+                    setUpCreatePage(user);
+                } else {
+                    setUpAccountFrame(user);
+                }
                 userFrame.setVisible(false);
-                accountFrame.setVisible(true);
             }
         });
 
@@ -156,28 +164,28 @@ public class GamePage extends JFrame implements ActionListener{
         accountPanel = new JPanel();
         accountPanel.setLayout(null);
 
-        label_email = new JLabel(user + "'s Email:");
+        label_email = new JLabel("Your Email:");
         label_email.setFont(new Font("Arial", Font.BOLD, 16));
         label_email.setForeground(Color.WHITE);
         label_email.setBounds(80, 110, 135, 20);
-        accountPanel.add(label_email);
 
         label_password = new JLabel("Enter Password:");
         label_password.setFont(label_email.getFont());
         label_password.setForeground(Color.WHITE);
         label_password.setBounds(label_email.getX()+2, label_email.getY() + 40,
                 label_email.getWidth(), label_email.getHeight());
-        accountPanel.add(label_password);
 
-        // enter the email here from sql
         textField_email = new JTextField(delegate.getUserFromSQL(user).getEmail());
         textField_email.setBounds(label_email.getX() + label_email.getWidth() + 20,
                 label_email.getY(), 120, label_email.getHeight());
-        accountPanel.add(textField_email);
 
         textField_password = new JPasswordField();
         textField_password.setBounds(textField_email.getX(), label_password.getY(),
                 120, label_password.getHeight());
+
+        accountPanel.add(label_email);
+        accountPanel.add(label_password);
+        accountPanel.add(textField_email);
         accountPanel.add(textField_password);
 
         button_login = new JButton("Login");
@@ -243,6 +251,109 @@ public class GamePage extends JFrame implements ActionListener{
 
         accountFrame.add(accountPanel);
         accountFrame.setVisible(true);
+    }
+
+    private void setUpCreatePage(String user){
+        createFrame = new JFrame("Create Account");
+        createFrame.setSize(540, 360);
+        createFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+        createPanel = new JPanel();
+        createPanel.setLayout(null);
+
+        label_email = new JLabel("Your Email:");
+        label_email.setFont(new Font("Arial", Font.BOLD, 16));
+        label_email.setForeground(Color.WHITE);
+        label_email.setBounds(80, 110, 135, 20);
+
+        label_password = new JLabel("Enter Password:");
+        label_password.setFont(label_email.getFont());
+        label_password.setForeground(Color.WHITE);
+        label_password.setBounds(label_email.getX()+2, label_email.getY() + 40,
+                label_email.getWidth(), label_email.getHeight());
+
+        textField_email = new JTextField(delegate.getUserFromSQL(user).getEmail());
+        textField_email.setBounds(label_email.getX() + label_email.getWidth() + 20,
+                label_email.getY(), 120, label_email.getHeight());
+
+        textField_password = new JPasswordField();
+        textField_password.setBounds(textField_email.getX(), label_password.getY(),
+                120, label_password.getHeight());
+
+        combobox = new JComboBox<String>(new String[]{"English", "Chinese", "Japanese"});
+        combobox.setBounds(textField_password.getX(), textField_password.getY()+40, textField_password.getWidth(), textField_password.getHeight());
+
+        label_language = new JLabel("Choose Your Language:");
+        label_language.setFont(new Font("Arial", Font.BOLD, 16));
+        label_language.setForeground(Color.WHITE);
+        label_language.setBounds(label_password.getX()-60, label_password.getY()+40, label_password.getWidth()+50, label_password.getHeight());
+
+        button_create = new JButton("Create");
+        button_create.setBounds(textField_email.getX() + 20, label_email.getY() + 120, 80, 22);
+        button_create.setFocusPainted(false);
+        createPanel.add(button_create);
+        button_create.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String lan = combobox.getItemAt(userCombobox.getSelectedIndex());
+                delegate.insertAccountIntoSQL(new Account(userValueID+1, textField_password.getText(), lan, textField_email.getText()));
+                setUpAccountFrame(user);
+                createFrame.setVisible(false);
+            }
+        });
+
+        imageSky.setImage(imageSky.getImage().getScaledInstance(540,360,Image.SCALE_DEFAULT));
+        imageLabel = new JLabel(imageSky);
+        imageLabel.setBounds(0, 0, 540, 360);
+
+        createPanel.add(label_email);
+        createPanel.add(label_password);
+        createPanel.add(label_language);
+        createPanel.add(textField_email);
+        createPanel.add(textField_password);
+        createPanel.add(combobox);
+        createPanel.add(imageLabel);
+
+        centreOnScreen(createFrame);
+        createFrame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                userFrame.setVisible(true);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+
+        createFrame.add(createPanel);
+        createFrame.setVisible(true);
     }
 
     public void close() {
