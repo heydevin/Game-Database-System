@@ -43,7 +43,7 @@ public class GameSystem implements LoginConnector {
             mapWindow.close();
             // incomplete
             dbHandler.databaseSetup();
-            this.showUser();
+//            this.showUser();
         } else {
             loginWindow.handleLoginFailed();
         }
@@ -89,5 +89,24 @@ public class GameSystem implements LoginConnector {
             System.out.printf("%-20.20s", model.getBirthday());
             System.out.println();
         }
+    }
+
+    public String getUserInfoFromSQL(String item, String userName) {
+        User[] models = dbHandler.getUserInfo();
+        String info = "need to change";
+
+        for (int i = 0; i < models.length; i++) {
+            User model = models[i];
+            if(model.getName().equals(userName)){
+                if(item == "Email"){
+                    info = model.getEmail();
+                } else if(item == "Name"){
+                    info = model.getName();
+                } else {
+                    info = model.getBirthday().toString();
+                }
+            }
+        }
+        return info;
     }
 }

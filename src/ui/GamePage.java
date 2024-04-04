@@ -1,6 +1,7 @@
 package ui;
 
 import connecter.LoginConnector;
+import controller.GameSystem;
 import entity.Account;
 import entity.User;
 
@@ -121,7 +122,7 @@ public class GamePage extends JFrame implements ActionListener{
 //        userPanel.add(scrollPane);
 
         userCombobox = new JComboBox<String>(new String[]{"Desheng", "Xiran", "James"});
-        userCombobox.setBounds(75, 120, 100, 40);
+        userCombobox.setBounds(75, 120, 105, 40);
         userCombobox.setBackground(Color.white);
         userPanel.add(userCombobox);
 
@@ -142,14 +143,16 @@ public class GamePage extends JFrame implements ActionListener{
         imageAcc = new ImageIcon("src/image/black.jpg");
         imageAcc.setImage(imageAcc.getImage().getScaledInstance(960,405,Image.SCALE_DEFAULT));
         imageAccLabel = new JLabel(imageAcc);
-        imageAccLabel.setBounds(0, 0, 540, 365);
+        imageAccLabel.setBounds(0, 0, 540, 380);
         userPanel.add(imageAccLabel);
 
         centreOnScreen(userFrame);
         userFrame.add(userPanel);
         userFrame.setVisible(true);
     }
+
     private void setUpAccountFrame(String user) {
+        System.out.println(user);
         accountFrame = new JFrame("Account Login");
         accountFrame.setSize(540, 360);
         accountFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -170,7 +173,8 @@ public class GamePage extends JFrame implements ActionListener{
                 label_email.getWidth(), label_email.getHeight());
         accountPanel.add(label_password);
 
-        textField_email = new JTextField();
+        // enter the email here from sql
+        textField_email = new JTextField(delegate.getUserInfoFromSQL("Email", user));
         textField_email.setBounds(label_email.getX() + label_email.getWidth() + 20,
                 label_email.getY(), 120, label_email.getHeight());
         accountPanel.add(textField_email);
@@ -183,7 +187,15 @@ public class GamePage extends JFrame implements ActionListener{
         button_login = new JButton("Login");
         button_login.setBounds(textField_email.getX() + 20, label_email.getY() + 80, 80, 22);
         button_login.setFocusPainted(false);
-        button_login.addActionListener(this);
+        button_login.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(textField_password.getText().equals(delegate.getUserInfoFromSQL("Name",user))){
+                    accountFrame.setVisible(false);
+                    frame.setVisible(true);
+                }
+            }
+        });
         accountPanel.add(button_login);
 
         image.setImage(image.getImage().getScaledInstance(540,360,Image.SCALE_DEFAULT));
@@ -195,11 +207,17 @@ public class GamePage extends JFrame implements ActionListener{
         accountFrame.add(accountPanel);
         accountFrame.setVisible(true);
     }
+
     public void close() {
         frame.setVisible(false);
     }
     public void open() {
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        LoginConnector delegate = new GameSystem();
+        new GamePage(delegate);
     }
 
     private void centreOnScreen(JFrame setFrame) {
