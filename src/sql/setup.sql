@@ -1,13 +1,13 @@
 -- initializing sql
 
-CREATE TABLE User(
+CREATE TABLE UserTable(
     Email VARCHAR(50) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
     Birthday DATE
 );
 
 CREATE TABLE Account(
-    UID INT PRIMARY KEY,
+    UserID INT PRIMARY KEY,
     Password VARCHAR(50) NOT NULL,
     Language VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
@@ -16,10 +16,10 @@ CREATE TABLE Account(
 
 CREATE TABLE SavingData(
     DataID CHAR(10),
-    UID INT,
+    UserID INT,
     CreatingDate DATE NOT NULL,
-    PRIMARY KEY (DataID, UID),
-    FOREIGN KEY (UID) REFERENCES Account(UID)
+    PRIMARY KEY (DataID, UserID),
+    FOREIGN KEY (UserID) REFERENCES Account(UserID)
 );
 
 
@@ -93,10 +93,10 @@ CREATE TABLE DungeonInfo(
 
 CREATE TABLE Characters_Stats(
                                  HP INTEGER,
-                                 Level INTEGER PRIMARY KEY);
+                                 charLevel INTEGER PRIMARY KEY);
 
 CREATE TABLE Characters_Info(
-                                Level INTEGER,
+                                charLevel INTEGER,
                                 Money INTEGER,
                                 Cname VARCHAR(50) PRIMARY KEY,
                                 Rname VARCHAR(50),
@@ -107,11 +107,11 @@ CREATE TABLE Characters_Info(
 
 CREATE TABLE Store (
                        DataID CHAR(10),
-                       UID INT,
+                       UserID INT,
                        Cname VARCHAR(50),
                        Playtime INT,
-                       PRIMARY KEY (DataID, UID, Cname),
-                       FOREIGN KEY (DataID, UID) REFERENCES SavingData(DataID, UID),
+                       PRIMARY KEY (DataID, UserID, Cname),
+                       FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID),
                        FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname));
 
 
@@ -130,26 +130,26 @@ VALUES ('test4@gmail.com','Test User 4', TO_DATE('04-04-2004', 'dd-mm-yyyy'));
 INSERT INTO User (Email, Name, Birthday)
 VALUES ('test5@gmail.com','Test User 5', TO_DATE('05-05-2005', 'dd-mm-yyyy'));
 
-INSERT INTO Account (UID, Password, Language, Email)
+INSERT INTO Account (UserID, Password, Language, Email)
 VALUES (1, 'password1', 'English', 'test1@gmail.com');
-INSERT INTO Account (UID, Password, Language, Email)
+INSERT INTO Account (UserID, Password, Language, Email)
 VALUES (2, 'password2', 'English', 'test2@gmail.com');
-INSERT INTO Account (UID, Password, Language, Email)
+INSERT INTO Account (UserID, Password, Language, Email)
 VALUES (3, 'password3', 'English', 'test3@gmail.com');
-INSERT INTO Account (UID, Password, Language, Email)
+INSERT INTO Account (UserID, Password, Language, Email)
 VALUES (4, 'password4', 'English', 'test4@gmail.com');
-INSERT INTO Account (UID, Password, Language, Email)
+INSERT INTO Account (UserID, Password, Language, Email)
 VALUES (5, 'password5', 'English', 'test5@gmail.com');
 
-INSERT INTO SavingData (DataID, UID, CreatingDate)
+INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (1, 1, TO_DATE('01-JAN-2022', 'DD-MON-YYYY'));
-INSERT INTO SavingData (DataID, UID, CreatingDate)
+INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (2, 2, TO_DATE('02-FEB-2022', 'DD-MON-YYYY'));
-INSERT INTO SavingData (DataID, UID, CreatingDate)
+INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (3, 3, TO_DATE('03-MAR-2022', 'DD-MON-YYYY'));
-INSERT INTO SavingData (DataID, UID, CreatingDate)
+INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (4, 4, TO_DATE('04-APR-2022', 'DD-MON-YYYY'));
-INSERT INTO SavingData (DataID, UID, CreatingDate)
+INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (5, 5, TO_DATE('05-MAY-2022', 'DD-MON-YYYY'));
 
 INSERT INTO Store (DataID, UID, Cname, Playtime)

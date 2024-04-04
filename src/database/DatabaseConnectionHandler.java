@@ -66,7 +66,7 @@ public class DatabaseConnectionHandler {
         ArrayList<User> result = new ArrayList<User>();
 
         try {
-            String query = "SELECT * FROM user_table_1";
+            String query = "SELECT * FROM USERTABLE";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
@@ -90,15 +90,25 @@ public class DatabaseConnectionHandler {
         try {
             String query = "select table_name from user_tables";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                ps.execute("DROP TABLE user_table_1");
-                break;
-            }
-
-            rs.close();
+            ps.execute("DROP TABLE UserTable cascade constraints purge");
+            ps.execute("DROP TABLE Account cascade constraints purge");
+            ps.execute("DROP TABLE SavingData cascade constraints purge");
+            ps.execute("DROP TABLE Roles cascade constraints purge");
+            ps.execute("DROP TABLE Weapons cascade constraints purge");
+            ps.execute("DROP TABLE Map cascade constraints purge");
+            ps.execute("DROP TABLE LockedArea cascade constraints purge");
+            ps.execute("DROP TABLE UnlockArea cascade constraints purge");
+            ps.execute("DROP TABLE Coordinate cascade constraints purge");
+            ps.execute("DROP TABLE LearnSkills_Stats cascade constraints purge");
+            ps.execute("DROP TABLE LearnSkills_Info cascade constraints purge");
+            ps.execute("DROP TABLE BossInfo cascade constraints purge");
+            ps.execute("DROP TABLE DungeonStats cascade constraints purge");
+            ps.execute("DROP TABLE DungeonInfo cascade constraints purge");
+            ps.execute("DROP TABLE Characters_Stats cascade constraints purge");
+            ps.execute("DROP TABLE Characters_Info cascade constraints purge");
+            ps.execute("DROP TABLE Store cascade constraints purge");
             ps.close();
+            System.out.println("Drop finished");
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
@@ -106,7 +116,7 @@ public class DatabaseConnectionHandler {
 
     public void insertUserModel(User model) {
         try {
-            String query = "INSERT INTO user_table_1 VALUES (?,?,?)";
+            String query = "INSERT INTO USERTABLE VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1, model.getEmail());
             ps.setString(2, model.getName());
@@ -129,22 +139,26 @@ public class DatabaseConnectionHandler {
         dropBranchTableIfExists();
 
         try {
-            String query = "CREATE TABLE user_table_1 (email varchar2(50) PRIMARY KEY, name varchar2(50) NOT NULL, birthday Date)";
+            String query = "CREATE TABLE UserTable (\n" +
+                    "    Email VARCHAR(50) PRIMARY KEY,\n" +
+                    "    Name VARCHAR(50) NOT NULL,\n" +
+                    "    Birthday DATE\n" +
+                    ")";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating User Table");
+            System.out.println("Error in Creating UserTable Table");
         }
 
         try {
             String query = "CREATE TABLE Account(\n" +
-                    "    UID INT PRIMARY KEY,\n" +
+                    "    UserID INT PRIMARY KEY,\n" +
                     "    Password VARCHAR(50) NOT NULL,\n" +
                     "    Language VARCHAR(50) NOT NULL,\n" +
                     "    Email VARCHAR(50) NOT NULL,\n" +
-                    "    FOREIGN KEY (Email) REFERENCES User(Email)\n" +
+                    "    FOREIGN KEY (Email) REFERENCES UserTable(Email)\n" +
                     ")";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
@@ -157,10 +171,10 @@ public class DatabaseConnectionHandler {
         try {
             String query = "CREATE TABLE SavingData(\n" +
                     "    DataID CHAR(10),\n" +
-                    "    UID INT,\n" +
+                    "    UserID INT,\n" +
                     "    CreatingDate DATE NOT NULL,\n" +
-                    "    PRIMARY KEY (DataID, UID),\n" +
-                    "    FOREIGN KEY (UID) REFERENCES Account(UID)\n" +
+                    "    PRIMARY KEY (DataID, UserID),\n" +
+                    "    FOREIGN KEY (UserID) REFERENCES Account(UserID)\n" +
                     ")";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
@@ -171,63 +185,14 @@ public class DatabaseConnectionHandler {
         }
 
         try {
-            String query = "CREATE TABLE Store (\n" +
-                    "                       DataID CHAR(10),\n" +
-                    "                       UID INT,\n" +
-                    "                       Cname VARCHAR(50),\n" +
-                    "                       Playtime INT,\n" +
-                    "                       PRIMARY KEY (DataID, UID, Cname),\n" +
-                    "                       FOREIGN KEY (DataID, UID) REFERENCES SavingData(DataID, UID),\n" +
-                    "                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname)\n" +
-                    ")";
+            String query = "CREATE TABLE Roles(\n" +
+                    "                      Rname VARCHAR(50) PRIMARY KEY)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Store Table");
-        }
-
-        try {
-            String query = "CREATE TABLE Characters_Stats(\n" +
-                    "                                 HP INTEGER,\n" +
-                    "                                 Level INTEGER PRIMARY KEY)";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Characters_Stats Table");
-        }
-
-        try {
-            String query = "CREATE TABLE Characters_Info(\n" +
-                    "                                Level INTEGER,\n" +
-                    "                                Money INTEGER,\n" +
-                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
-                    "                                Rname VARCHAR(50),\n" +
-                    "                                MapID CHAR(10),\n" +
-                    "                                currLoc CHAR(20),\n" +
-                    "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
-                    "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname))";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Characters_Info Table");
-        }
-
-        try {
-            String query = "CREATE TABLE Characters_Stats(\n" +
-                    "                                 HP INTEGER,\n" +
-                    "                                 Level INTEGER PRIMARY KEY)";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Characters_Stats Table");
+            System.out.println("Error in Creating Roles Table");
         }
 
         try {
@@ -243,19 +208,6 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             System.out.println("Error in Creating Weapons Table");
-        }
-
-        try {
-            String query = "CREATE TABLE Roles(\n" +
-                    "                      Rname VARCHAR(50) PRIMARY KEY ,\n" +
-                    "                      Cname VARCHAR(50),\n" +
-                    "                      FOREIGN KEY(Cname) REFERENCES Characters_Info(Cname) on DELETE CASCADE)";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Roles Table");
         }
 
         try {
@@ -290,7 +242,7 @@ public class DatabaseConnectionHandler {
                     "                           MapID CHAR(10),\n" +
                     "                           MapName VARCHAR(50),\n" +
                     "                           CheckPoint CHAR(10),\n" +
-                    "                           PRIMARY KEY(MapID))";
+                    "                           FOREIGN KEY(MapID) REFERENCES Map(MapID))";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -385,6 +337,53 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             System.out.println("Error in Creating DungeonInfo Table");
+        }
+
+        try {
+            String query = "CREATE TABLE Characters_Stats(\n" +
+                    "                                 HP INTEGER,\n" +
+                    "                                 charLevel INTEGER PRIMARY KEY)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            System.out.println("Error in Creating Characters_Stats Table");
+        }
+
+        try {
+            String query = "CREATE TABLE Characters_Info(\n" +
+                    "                                charLevel INTEGER,\n" +
+                    "                                Money INTEGER,\n" +
+                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
+                    "                                Rname VARCHAR(50),\n" +
+                    "                                MapID CHAR(10),\n" +
+                    "                                currLoc CHAR(20),\n" +
+                    "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
+                    "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            System.out.println("Error in Creating Characters_Info Table");
+        }
+
+        try {
+            String query = "CREATE TABLE Store (\n" +
+                    "                       DataID CHAR(10),\n" +
+                    "                       UserID INT,\n" +
+                    "                       Cname VARCHAR(50),\n" +
+                    "                       Playtime INT,\n" +
+                    "                       PRIMARY KEY (DataID, UserID, Cname),\n" +
+                    "                       FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID),\n" +
+                    "                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            System.out.println("Error in Creating Store Table");
         }
 
 //        User UserModel1 = new User("Desheng", "Devin@gmail.com", Date.valueOf("2000-1-10"));
