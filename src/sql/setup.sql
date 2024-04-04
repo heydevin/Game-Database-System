@@ -1,4 +1,5 @@
--- create table part:
+-- initializing sql
+
 CREATE TABLE UserTable(
     Email VARCHAR(50) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
@@ -10,7 +11,7 @@ CREATE TABLE Account(
     Password VARCHAR(50) NOT NULL,
     Language VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
-    FOREIGN KEY (Email) REFERENCES User(Email)
+    FOREIGN KEY (Email) REFERENCES UserTable(Email)
 );
 
 CREATE TABLE SavingData(
@@ -92,28 +93,28 @@ CREATE TABLE DungeonInfo(
 
 CREATE TABLE Characters_Stats(
                                  HP INTEGER,
+                                 Playtime INT,
                                  charLevel INTEGER PRIMARY KEY);
 
 CREATE TABLE Characters_Info(
+                                Cname VARCHAR(50) PRIMARY KEY,
                                 charLevel INTEGER,
                                 Money INTEGER,
-                                Cname VARCHAR(50) PRIMARY KEY,
                                 Rname VARCHAR(50),
                                 MapID CHAR(10),
                                 currLoc CHAR(20),
+                                DataID CHAR(10),
+                                UserID INT,
                                 FOREIGN KEY(MapID) REFERENCES Map(MapID),
-                                FOREIGN KEY(Rname) REFERENCES Roles(Rname));
+                                FOREIGN KEY(Rname) REFERENCES Roles(Rname),
+                                FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID));
 
-CREATE TABLE Store (
-                       DataID CHAR(10),
-                       UserID INT,
-                       Cname VARCHAR(50),
-                       Playtime INT,
-                       PRIMARY KEY (DataID, UserID, Cname),
-                       FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID),
-                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname));
 
--- insert into part:
+
+
+
+
+
 
 INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test1@gmail.com','Test User 1', TO_DATE('01-01-2001', 'dd-mm-yyyy'));
