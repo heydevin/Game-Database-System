@@ -141,7 +141,7 @@ public class CharacterPage extends JFrame {
         insertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(textField_charName.getText().equals("") || textField_charName.getText() == null){
+                if(textField_charName.getText().equals("") || textField_charName.getText() == null) {
                     JOptionPane.showMessageDialog(addCharFrame, "Please enter character name");
                 } else {
                     CharacterInfo newChar = new CharacterInfo(1, 999, textField_charName.getText(),

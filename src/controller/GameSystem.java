@@ -199,5 +199,14 @@ public class GameSystem implements LoginConnector {
         return table;
     }
 
+    public DefaultTableModel findAllQuery() {
+        DefaultTableModel table = dbHandler.findAll();
+        return table;
+    }
+    public DefaultTableModel havingQuery() {
+        DefaultTableModel table = dbHandler.having();
+        return table;
+    }
+
 }
 

@@ -290,10 +290,11 @@ public class DatabaseConnectionHandler {
 
     public void initializeWeapons() {
         insertWeapon(new Weapons(1000000001, 100, 150, "Warrior", "Hammer"));
+        insertWeapon(new Weapons(1000000001, 1, 150, "Warrior", "stick"));
         insertWeapon(new Weapons(1000000002, 20, 200, "Assassin", "Knife"));
-        insertWeapon(new Weapons(1000000002, 20, 250, "Mage", "Magic wand"));
+        insertWeapon(new Weapons(1000000002, 51, 250, "Mage", "Magic wand"));
         insertWeapon(new Weapons(1000000002, 20, 300, "Archer", "Bow"));
-        insertWeapon(new Weapons(1000000002, 20, 400, "Berserker", "Sward"));
+        insertWeapon(new Weapons(1000000002, 20, 400, "Berserker", "Sword"));
     }
 
     public void initializeCharacterInfo() {
@@ -301,7 +302,7 @@ public class DatabaseConnectionHandler {
         insertCharacterInfoModel(new CharacterInfo(40, 200, "Austin", "Assassin", "Town"));
         insertCharacterInfoModel(new CharacterInfo(33, 330, "Carols", "Mage", "Town"));
         insertCharacterInfoModel(new CharacterInfo(72, 90, "Duke", "Archer", "Desert"));
-        insertCharacterInfoModel(new CharacterInfo(18, 170, "Julia", "Berserker", "Highland"));
+        insertCharacterInfoModel(new CharacterInfo(18, 80, "Julia", "Berserker", "Highland"));
         insertCharacterInfoModel(new CharacterInfo(44, 700, "Katty", "Warrior", "Town"));
         insertCharacterInfoModel(new CharacterInfo(35, 220, "Jones", "Archer", "Town"));
     }
@@ -631,6 +632,54 @@ public class DatabaseConnectionHandler {
                 Object[] row = new Object[columns.length];
                 row[0] = rs.getString("rname");
                 row[1] = rs.getString("max(CHARLEVEL)");
+                table.addRow(row);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return table;
+    }
+
+    public DefaultTableModel findAll() {
+        String[] columns = {"map ID", "map name"};
+        DefaultTableModel table = new DefaultTableModel(columns,0);
+        try {
+            String query = "SELECT MAPID, MAPNAME FROM MAP M where not exists ((select CNAME from CHARACTERS_INFO C where C.money > 100) minus (select CNAME from CHARACTERS_INFO C1 where c1.MAPID=M.MAPID AND C1.money > 100))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Object[] row = new Object[columns.length];
+                row[0] = rs.getString("MAPID");
+                row[1] = rs.getString("MAPNAME");
+                table.addRow(row);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return table;
+    }
+
+    public DefaultTableModel having() {
+        String[] columns = {"role name", "max weapon damage"};
+        DefaultTableModel table = new DefaultTableModel(columns,0);
+        try {
+            String query = "select R.rname, max(S.WPDAMAGE) from ROLES R, WEAPONS S where R.RNAME = S.RNAME group by R.rname having max(S.WPDAMAGE)> 50";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Object[] row = new Object[columns.length];
+                row[0] = rs.getString("RNAME");
+                row[1] = rs.getString("MAX(S.WPDAMAGE)");
                 table.addRow(row);
             }
 
