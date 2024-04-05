@@ -20,4 +20,8 @@ public interface LoginConnector {
     String[] getAffordableWeapons(String cName);
 
     void updateCharacterLevel(int currentLevel, String cName);
+
+    DefaultTableModel findAllQuery();
+
+    DefaultTableModel havingQuery();
 }

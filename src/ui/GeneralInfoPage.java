@@ -91,7 +91,7 @@ public class GeneralInfoPage {
 
         selectButton.setBounds(10, 420, 100, 25);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters"});
+        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the maximum damage of weapons with maximum weapon damage larger than 50 for each role","the maps that have all characters with money larger than 100"});
         selectionBox.setBounds(150, 400, 400, 100);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
@@ -109,16 +109,16 @@ public class GeneralInfoPage {
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
                 }
-                if (selectionBox.getSelectedItem() == "the dungeons that have been cleared for each map with more than one such dungeon") {
-                    DefaultTableModel table = delegate.groupByQuery();
+                if (selectionBox.getSelectedItem() == "the maximum damage of weapons with maximum weapon damage larger than 50 for each role") {
+                    DefaultTableModel table = delegate.havingQuery();
                     JTable rsTable = new JTable(table);
                     scrollPane = new JScrollPane(rsTable);
                     rsTable.setFillsViewportHeight(true);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
                 }
-                if (selectionBox.getSelectedItem() == "the dungeons that have been cleared for each map with more than one such dungeon") {
-                    DefaultTableModel table = delegate.groupByQuery();
+                if (selectionBox.getSelectedItem() == "the maps that have all characters with money larger than 100") {
+                    DefaultTableModel table = delegate.findAllQuery();
                     JTable rsTable = new JTable(table);
                     scrollPane = new JScrollPane(rsTable);
                     rsTable.setFillsViewportHeight(true);

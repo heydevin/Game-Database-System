@@ -8,7 +8,7 @@ public class CharacterInfo {
     private String mapID;
     private String currLoc;
 
-    public CharacterInfo(int level, int money, String cname, String rname, String currLoc){
+    public CharacterInfo(int level, int money, String cname, String rname,  String currLoc){
         this.level = level;
         this.money = money;
         this.characterName = cname;
