@@ -17,7 +17,7 @@ public interface LoginConnector {
     void deleteCharacterInfoFromSQL(String cName);
     void updateCharacterMoney(int newLevel,String cName);
 
-    String[] getAffordableWeapons(String characterName);
+    String[] getAffordableWeapons(String cName);
 
-    void updateCharacterLevel(int newLevel, String charName);
+    void updateCharacterLevel(int currentLevel, String cName);
 }

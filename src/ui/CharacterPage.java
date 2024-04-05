@@ -218,7 +218,7 @@ public class CharacterPage extends JFrame {
         panel.add(affordableWeaponsButton);
 
         levelUpButton = new JButton("Level Up");
-        levelUpButton.setBounds(backButton.getX() + backButton.getWidth() + 60, 420, 100, 25);
+        levelUpButton.setBounds(backButton.getX() + backButton.getWidth() + 190, 420, 100, 25);
         panel.add(levelUpButton);
 
         JLabel levelText = new JLabel("level");
@@ -315,13 +315,13 @@ public class CharacterPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(characterTable.getSelectionModel().isSelectionEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Please select a character.");
+                    JOptionPane.showMessageDialog(frame, "Please select a character before you level up.");
                 } else{
-                    String charName = tableModel.getValueAt(characterTable.getSelectedRow(), 0).toString();
-                    int currentLevel = Integer.parseInt(tableModel.getValueAt(characterTable.getSelectedRow(), 1).toString());
-                    int newLevel = currentLevel + 1;
-                    delegate.updateCharacterLevel(newLevel, charName);
-                    tableModel.setValueAt(newLevel, characterTable.getSelectedRow(), 1);
+                    int currentLevel = Integer.parseInt(tableModel.getValueAt(characterTable.getSelectedRow(),1).toString());
+                    currentLevel++; // Increment Level
+                    String name = tableModel.getValueAt(characterTable.getSelectedRow(),0).toString();
+                    delegate.updateCharacterLevel(currentLevel, name);
+                    tableModel.setValueAt(String.valueOf(currentLevel), characterTable.getSelectedRow(), 1);
                 }
             }
         });
