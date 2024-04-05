@@ -13,4 +13,5 @@ public interface LoginConnector {
     void insertAccountIntoSQL(Account account);
     void insertCharacterIntoSQL(CharacterInfo character);
 
+    void groupByQuery();
 }

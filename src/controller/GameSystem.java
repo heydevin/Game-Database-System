@@ -115,4 +115,7 @@ public class GameSystem implements LoginConnector {
     public void insertCharacterIntoSQL(CharacterInfo character) {
         dbHandler.insertCharacterInfoModel(character);
     }
+    public void groupByQuery() {
+
+    }
 }
