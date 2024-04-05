@@ -182,12 +182,17 @@ public class GameSystem implements LoginConnector {
         dbHandler.deleteCharacterInfo(cName);
     }
 
-    public void updateCharacterLevel(int newLevel, String cName) {
-        dbHandler.updateCharacterLevel(newLevel, cName);
+    public void updateCharacterMoney(int newMoney, String cName) {
+        dbHandler.updateCharacterMoney(newMoney, cName);
     }
 
     public String[] getAffordableWeapons(String characterName) {
         return dbHandler.getAffordableWeapons(characterName);
+    }
+
+    @Override
+    public void updateCharacterLevel(int newLevel, String charName) {
+        dbHandler.updateCharacterMoney(newLevel, charName);
     }
 
 }

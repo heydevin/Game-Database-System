@@ -182,7 +182,7 @@ public class CharacterPage extends JFrame {
 
     private void createButtons() {
         addButton = new JButton("Insert");
-        updateButton = new JButton("Update Level");
+        updateButton = new JButton("Update Money");
         deleteButton = new JButton("Delete");
         backButton = new JButton("Back");
 
@@ -191,10 +191,10 @@ public class CharacterPage extends JFrame {
         updateButton.setBounds(230, 420, 120, 25);
         backButton.setBounds(360, 420, 100, 25);
 
-        updateTips = new JLabel("Enter New Level Here:");
-        updateTips.setBounds(120, 455, 200,25);
+        updateTips = new JLabel("Enter New Money Value Here:");
+        updateTips.setBounds(80, 455, 200,25);
         textField_updateLevel = new JTextField();
-        textField_updateLevel.setBounds(updateTips.getX()+140,updateTips.getY(),60,updateTips.getHeight());
+        textField_updateLevel.setBounds(120+140,updateTips.getY(),60,updateTips.getHeight());
 
         panel.add(addButton);
         panel.add(updateButton);
@@ -243,11 +243,11 @@ public class CharacterPage extends JFrame {
                 if(characterTable.getSelectionModel().isSelectionEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please select or create a character before you update.");
                 } else if(textField_updateLevel.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Please enter the new level value for character before you update.");
+                    JOptionPane.showMessageDialog(frame, "Please enter the new money value for character before you update.");
                 } else {
                     String name = tableModel.getValueAt(characterTable.getSelectedRow(), 0).toString();
-                    delegate.updateCharacterLevel(Integer.parseInt(textField_updateLevel.getText()), name);
-                    tableModel.setValueAt(textField_updateLevel.getText(), characterTable.getSelectedRow(), 1);
+                    delegate.updateCharacterMoney(Integer.parseInt(textField_updateLevel.getText()), name);
+                    tableModel.setValueAt(textField_updateLevel.getText(), characterTable.getSelectedRow(), 2);
                 }
             }
         });
