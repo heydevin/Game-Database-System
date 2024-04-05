@@ -46,8 +46,6 @@ public class GameSystem implements LoginConnector {
         }
     }
 
-
-
     public void switchPage(int pageIndex){
         if(pageIndex == 1){
             // Index 1 is Game Window
