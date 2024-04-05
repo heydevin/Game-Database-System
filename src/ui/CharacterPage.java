@@ -29,7 +29,7 @@ public class CharacterPage extends JFrame {
 
     private Connection connection = null;
 
-
+    private JButton affordableWeaponsButton;
     private DefaultTableModel tableModel;
     private JLabel updateTips;
     private JTextField textField_updateLevel;
@@ -203,6 +203,10 @@ public class CharacterPage extends JFrame {
         panel.add(updateTips);
         panel.add(textField_updateLevel);
 
+        affordableWeaponsButton = new JButton("Affordable Weapons");
+        affordableWeaponsButton.setBounds(backButton.getX() + backButton.getWidth() + 20, 420, 160, 25);
+        panel.add(affordableWeaponsButton);
+
         JLabel levelText = new JLabel("level");
         levelText.setBounds(300, 45, 60, 25);
         JTextField level = new JTextField(20);
@@ -278,6 +282,21 @@ public class CharacterPage extends JFrame {
                 }
             }
         });
+
+        affordableWeaponsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(characterTable.getSelectionModel().isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please select a character.");
+                } else{
+                    String characterName = tableModel.getValueAt(characterTable.getSelectedRow(),0).toString();
+                    String[] affordableWeapons = delegate.getAffordableWeapons(characterName);
+                    //show the affordableWeapons to user
+                    JOptionPane.showMessageDialog(frame, "Affordable weapons for " + characterName + ": " + String.join(", ", affordableWeapons));
+                }
+            }
+        });
+
     }
 
     public void insertCharacter_Info(CharacterInfo characterInfo) {
