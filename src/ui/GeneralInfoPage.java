@@ -91,7 +91,7 @@ public class GeneralInfoPage {
 
         selectButton.setBounds(10, 420, 100, 25);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters"});
+        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters","characters with weapons according to role"});
         selectionBox.setBounds(150, 400, 400, 100);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
@@ -101,15 +101,33 @@ public class GeneralInfoPage {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role");
-                DefaultTableModel table = delegate.groupByQuery();
-                JTable rsTable = new JTable(table);
-                scrollPane = new JScrollPane(rsTable);
-                rsTable.setFillsViewportHeight(true);
-                scrollPane.setBounds(10, 10, 760, 400);
-                panel.add(scrollPane);
+                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role") {
+                    DefaultTableModel table = delegate.groupByQuery();
+                    JTable rsTable = new JTable(table);
+                    scrollPane = new JScrollPane(rsTable);
+                    rsTable.setFillsViewportHeight(true);
+                    scrollPane.setBounds(10, 10, 760, 400);
+                    panel.add(scrollPane);
+                } else if (selectionBox.getSelectedItem() == "characters with weapons according to role") {
+                    String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
+                    if (charName != null) {
+                        DefaultTableModel table = delegate.getCharacterWeaponByRole(charName);
+                        if(scrollPane != null) {
+                            panel.remove(scrollPane);
+                        }
+                        JTable rsTable = new JTable(table);
+                        scrollPane = new JScrollPane(rsTable);
+                        rsTable.setFillsViewportHeight(true);
+                        scrollPane.setBounds(10, 10, 760, 400);
+                        panel.add(scrollPane);
+                        panel.revalidate();
+                        panel.repaint();
+                    }
+                }
             }
         });
+
+
     }
     public void close() {
         desktop.setVisible(false);

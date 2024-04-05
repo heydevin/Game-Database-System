@@ -11,7 +11,7 @@ public class DatabaseConnectionHandler {
     // Use this version of the ORACLE_URL if you are running the code off of the server
 //	private static final String ORACLE_URL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu";
     // Use this version of the ORACLE_URL if you are tunneling into the undergrad servers
-    private static final String ORACLE_URL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu";
+    private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
     private static final String EXCEPTION_TAG = "[EXCEPTION]";
     private static final String WARNING_TAG = "[WARNING]";
     private Connection connection = null;
@@ -684,5 +684,45 @@ public class DatabaseConnectionHandler {
         return weaponNames.toArray(new String[0]);
     }
 
+    public DefaultTableModel getCharacterWeaponByRole(String cname) {
+        String[] columns = {"Character Name", "Level", "Role", "Weapon Name", "Weapon Damage", "Weapon Price"};
+        DefaultTableModel table = new DefaultTableModel(columns,0);
+
+        try {
+            String query = "SELECT C.Cname, C.charLevel, C.Rname, W.Wname, W.wpDamage, W.Price " +
+                    "FROM Characters_Info C LEFT JOIN Weapons W ON C.Rname = W.Rname " +
+                    "WHERE C.Cname = ?";
+
+            PrintablePreparedStatement ps =
+                    new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, cname);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(!rs.isBeforeFirst()) {
+                // If ResultSet is empty (no weapons found for character's role)
+                Object[] row = new Object[] {cname, "-", "-", "No weapon for this role", "-", "-"};
+                table.addRow(row);
+            }else{
+                while(rs.next()) {
+                    Object[] row = new Object[columns.length];
+                    row[0] = rs.getString("Cname");
+                    row[1] = rs.getInt("charLevel");
+                    row[2] = rs.getString("Rname");
+                    row[3] = rs.getString("Wname");
+                    row[4] = rs.getInt("wpDamage");
+                    row[5] = rs.getInt("Price");
+                    table.addRow(row);
+                }
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return table;
+    }
 
 }

@@ -194,6 +194,10 @@ public class GameSystem implements LoginConnector {
     public void updateCharacterLevel(int currentLevel, String cName) {
         dbHandler.updateCharacterLevel(currentLevel, cName);
     }
+    public DefaultTableModel getCharacterWeaponByRole(String charName) {
+        DefaultTableModel table = dbHandler.getCharacterWeaponByRole(charName);
+        return table;
+    }
 
 }
 
