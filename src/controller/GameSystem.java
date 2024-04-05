@@ -50,78 +50,78 @@ public class GameSystem implements LoginConnector {
         }
     }
 
-    public void switchPage(int pageIndex){
-        if(pageIndex == 1){
+    public void switchPage(int pageIndex) {
+        if (pageIndex == 1) {
             // Index 1 is Game Window
-            if(savingDataWindow != null){
+            if (savingDataWindow != null) {
                 savingDataWindow.close();
             }
-            if(characterWindow != null){
+            if (characterWindow != null) {
                 characterWindow.close();
             }
-            if(mapWindow != null){
+            if (mapWindow != null) {
                 mapWindow.close();
             }
             GameWindow.open();  // OPEN!!
         } else if (pageIndex == 2) {
             // Index 2 is Saving Data Window
-            if(savingDataWindow == null){
+            if (savingDataWindow == null) {
                 savingDataWindow = new SavingDataPage(this);
             }
-            if(GameWindow != null){
+            if (GameWindow != null) {
                 GameWindow.close();
             }
-            if(characterWindow != null){
+            if (characterWindow != null) {
                 characterWindow.close();
             }
-            if(mapWindow != null){
+            if (mapWindow != null) {
                 mapWindow.close();
             }
             savingDataWindow.open();  // OPEN!!
         } else if (pageIndex == 3) {
             // Index 3 is Character Window
-            if(characterWindow == null){
+            if (characterWindow == null) {
                 characterWindow = new CharacterPage(this);
             }
-            if(GameWindow != null){
+            if (GameWindow != null) {
                 GameWindow.close();
             }
-            if(savingDataWindow != null){
+            if (savingDataWindow != null) {
                 savingDataWindow.close();
             }
-            if(mapWindow != null){
+            if (mapWindow != null) {
                 mapWindow.close();
             }
             characterWindow.open();  // OPEN!!
         } else if (pageIndex == 4) {
             // Index 4 is Map Window
-            if(mapWindow == null){
+            if (mapWindow == null) {
                 mapWindow = new MapPage(this);
             }
-            if(GameWindow != null){
+            if (GameWindow != null) {
                 GameWindow.close();
             }
-            if(savingDataWindow != null){
+            if (savingDataWindow != null) {
                 savingDataWindow.close();
             }
-            if(characterWindow != null){
+            if (characterWindow != null) {
                 characterWindow.close();
             }
             mapWindow.open();  // OPEN!!
         } else if (pageIndex == 5) {
-            if(GeneralInfoPage == null){
+            if (GeneralInfoPage == null) {
                 GeneralInfoPage = new GeneralInfoPage(this);
             }
-            if(mapWindow != null){
+            if (mapWindow != null) {
                 mapWindow.close();
             }
-            if(GameWindow != null){
+            if (GameWindow != null) {
                 GameWindow.close();
             }
-            if(savingDataWindow != null){
+            if (savingDataWindow != null) {
                 savingDataWindow.close();
             }
-            if(characterWindow != null){
+            if (characterWindow != null) {
                 characterWindow.close();
             }
             GeneralInfoPage.open();
@@ -133,7 +133,7 @@ public class GameSystem implements LoginConnector {
         User one = null;
         for (int i = 0; i < models.length; i++) {
             User model = models[i];
-            if(model.getName().equals(name)){
+            if (model.getName().equals(name)) {
                 one = model;
             }
         }
@@ -145,7 +145,7 @@ public class GameSystem implements LoginConnector {
         Account one = null;
         for (int i = 0; i < models.length; i++) {
             Account model = models[i];
-            if(model.getEmail().equals(email)){
+            if (model.getEmail().equals(email)) {
                 one = model;
             }
         }
@@ -155,12 +155,16 @@ public class GameSystem implements LoginConnector {
     public void insertAccountIntoSQL(Account account) {
         dbHandler.insertAccountModel(account);
     }
+
     public void insertCharacterIntoSQL(CharacterInfo character) {
         dbHandler.insertCharacterInfoModel(character);
     }
+
     public DefaultTableModel groupByQuery() {
         DefaultTableModel table = dbHandler.groupBy();
         return table;
+    }
+
     public void deleteCharacterInfoFromSQL(String cName) {
         dbHandler.deleteCharacterInfo(cName);
     }
@@ -169,3 +173,4 @@ public class GameSystem implements LoginConnector {
         dbHandler.updateCharacterLevel(newLevel, cName);
     }
 }
+
