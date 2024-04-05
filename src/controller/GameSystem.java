@@ -8,6 +8,8 @@ import entity.Role;
 import entity.User;
 import ui.*;
 
+import javax.swing.table.DefaultTableModel;
+
 public class GameSystem implements LoginConnector {
     private DatabaseConnectionHandler dbHandler;
     private LoginPage loginWindow;
@@ -15,6 +17,8 @@ public class GameSystem implements LoginConnector {
     private MapPage mapWindow;
     private SavingDataPage savingDataWindow;
     private GamePage GameWindow;
+
+    private GeneralInfoPage GeneralInfoPage;
 
 
     public GameSystem() {
@@ -104,6 +108,23 @@ public class GameSystem implements LoginConnector {
                 characterWindow.close();
             }
             mapWindow.open();  // OPEN!!
+        } else if (pageIndex == 5) {
+            if(GeneralInfoPage == null){
+                GeneralInfoPage = new GeneralInfoPage(this);
+            }
+            if(mapWindow != null){
+                mapWindow.close();
+            }
+            if(GameWindow != null){
+                GameWindow.close();
+            }
+            if(savingDataWindow != null){
+                savingDataWindow.close();
+            }
+            if(characterWindow != null){
+                characterWindow.close();
+            }
+            GeneralInfoPage.open();
         }
     }
 
@@ -137,11 +158,14 @@ public class GameSystem implements LoginConnector {
     public void insertCharacterIntoSQL(CharacterInfo character) {
         dbHandler.insertCharacterInfoModel(character);
     }
+    public DefaultTableModel groupByQuery() {
+        DefaultTableModel table = dbHandler.groupBy();
+        return table;
     public void deleteCharacterInfoFromSQL(String cName) {
         dbHandler.deleteCharacterInfo(cName);
     }
 
-    public void updateCharacterLevel(int newLevel,String cName) {
+    public void updateCharacterLevel(int newLevel, String cName) {
         dbHandler.updateCharacterLevel(newLevel, cName);
     }
 }

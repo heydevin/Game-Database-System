@@ -90,7 +90,7 @@ public class GeneralInfoPage {
 
         selectButton.setBounds(10, 420, 100, 25);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters"});
+        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters"});
         selectionBox.setBounds(160, 140, 100, 30);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
@@ -100,8 +100,13 @@ public class GeneralInfoPage {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectionBox.getSelectedItem() == "the characters with highest level for each role");
-                delegate.groupByQuery();
+                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role");
+                DefaultTableModel table = delegate.groupByQuery();
+                JTable rsTable = new JTable(table);
+                scrollPane = new JScrollPane(rsTable);
+                rsTable.setFillsViewportHeight(true);
+                scrollPane.setBounds(10, 10, 760, 400);
+                panel.add(scrollPane);
             }
         });
     }
