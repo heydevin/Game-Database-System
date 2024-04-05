@@ -45,6 +45,7 @@ public class GameSystem implements LoginConnector {
             dbHandler.initializeUsers();
             dbHandler.initializeRoles();
             dbHandler.initializeMaps();
+            dbHandler.initializeWeapons();
         } else {
             loginWindow.handleLoginFailed();
         }
@@ -171,6 +172,10 @@ public class GameSystem implements LoginConnector {
 
     public void updateCharacterLevel(int newLevel, String cName) {
         dbHandler.updateCharacterLevel(newLevel, cName);
+    }
+
+    public String[] getAffordableWeapons(String characterName) {
+        return dbHandler.getAffordableWeapons(characterName);
     }
 }
 

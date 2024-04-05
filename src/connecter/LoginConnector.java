@@ -18,4 +18,6 @@ public interface LoginConnector {
     DefaultTableModel groupByQuery();
     void deleteCharacterInfoFromSQL(String cName);
     void updateCharacterLevel(int newLevel,String cName);
+
+    String[] getAffordableWeapons(String characterName);
 }

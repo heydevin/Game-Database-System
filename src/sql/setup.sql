@@ -28,10 +28,11 @@ CREATE TABLE Roles(
 
 
 CREATE TABLE Weapons(
-                        WeaponID CHAR(10),
+                        WeaponID INTEGER,
                         wpDamage INTEGER,
                         Price INTEGER,
                         Rname VARCHAR(50),
+                        Wname VARCHAR(50),
                         FOREIGN KEY(Rname) REFERENCES Roles(Rname) on DELETE CASCADE);
 
 CREATE TABLE Map(
@@ -144,17 +145,6 @@ VALUES (4, 4, TO_DATE('04-APR-2022', 'DD-MON-YYYY'));
 INSERT INTO SavingData (DataID, UserID, CreatingDate)
 VALUES (5, 5, TO_DATE('05-MAY-2022', 'DD-MON-YYYY'));
 
-INSERT INTO Store (DataID, UserID, Cname, Playtime)
-VALUES (1, 1, 'Character1', 5);
-INSERT INTO Store (DataID, UserID, Cname, Playtime)
-VALUES (2, 2, 'Character2', 10);
-INSERT INTO Store (DataID, UserID, Cname, Playtime)
-VALUES (3, 3, 'Character3', 15);
-INSERT INTO Store (DataID, UserID, Cname, Playtime)
-VALUES (4, 4, 'Character4', 20);
-INSERT INTO Store (DataID, UserID, Cname, Playtime)
-VALUES (5, 5, 'Character5', 25);
-
 INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (100, 600, 1);
 INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (200, 660, 2);
 INSERT INTO Characters_Stats (HP, Playtime, charLevel) VALUES (300, 700, 3);
@@ -173,16 +163,16 @@ VALUES ('character4', 4, 400, 'role4', 'M000000004', 'x000000004y000000004', 4, 
 INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
 VALUES ('character5', 5, 500, 'role5', 'M000000005', 'x000000005y000000005', 5, 5);
 
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
-VALUES ('W000000001', 10, 100, 'role1' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
-VALUES ('W000000001', 10, 100, 'role1' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
-VALUES ('W000000001', 10, 100, 'role1' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
-VALUES ('W000000001', 10, 100, 'role1' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname)
-VALUES ('W000000001', 10, 100, 'role1' );
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+VALUES (1000000001, 10, 100, 'hammer', 'role1' );
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+VALUES (1000000002, 20, 200, 'knife', 'role2' );
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+VALUES (1000000003, 30, 300, 'magic wand', 'role3' );
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+VALUES (1000000004, 40, 400, 'bow', 'role4' );
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+VALUES (1000000005, 50, 500, 'sward', 'role5' );
 
 INSERT INTO Roles (Rname) VALUES ('role1');
 INSERT INTO Roles (Rname) VALUES ('role2');

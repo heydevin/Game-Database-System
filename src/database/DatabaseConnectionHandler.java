@@ -183,6 +183,24 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void insertWeapon(Weapons weapons) {
+        try {
+            String query = "INSERT INTO WEAPONS VALUES (?,?,?,?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, weapons.getWeaponID());
+            ps.setInt(2, weapons.getwpDamage());
+            ps.setInt(3, weapons.getPrice());
+            ps.setString(4, weapons.getRname());
+            ps.setString(5, weapons.getWname());
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
     public void insertMapModel(Map map) {
         try {
             String query = "INSERT INTO MAP VALUES (?,?)";
@@ -254,7 +272,7 @@ public class DatabaseConnectionHandler {
 
     public void initializeUsers() {
         User UserModel1 = new User("Desheng", "Devin@gmail.com", Date.valueOf("2000-1-10"));
-        User UserModel2 = new User("Xiran", "Xiran@gmail.com", Date.valueOf("2000-1-01"));
+        User UserModel2 = new User("Xiran", "Xiran@gmail.com", Date.valueOf("2002-4-11"));
         User UserModel3 = new User("James", "James@gmail.com", Date.valueOf("2000-1-03"));
 
         insertUserModel(UserModel1);
@@ -262,8 +280,20 @@ public class DatabaseConnectionHandler {
         insertUserModel(UserModel3);
 
         Account AccountModel1 = new Account(100000001, "p","Chinese", UserModel1.getEmail());
+        Account AccountModel2 = new Account(100000002, "123", "English", UserModel2.getEmail());
+        Account AccountModel3 = new Account(100000003, "123", "English", UserModel3.getEmail());
 
         insertAccountModel(AccountModel1);
+        insertAccountModel(AccountModel2);
+        insertAccountModel(AccountModel3);
+    }
+
+    public void initializeWeapons() {
+        insertWeapon(new Weapons(1000000001, 100, 100, "Warrior", "Hammer"));
+        insertWeapon(new Weapons(1000000002, 20, 200, "Assassin", "Knife"));
+        insertWeapon(new Weapons(1000000002, 20, 200, "Mage", "Magic wand"));
+        insertWeapon(new Weapons(1000000002, 20, 200, "Archer", "Bow"));
+        insertWeapon(new Weapons(1000000002, 20, 200, "Berserker", "Sward"));
     }
 
     public void deleteCharacterInfo(String charName) {
@@ -369,10 +399,11 @@ public class DatabaseConnectionHandler {
 
         try {
             String query = "CREATE TABLE Weapons(\n" +
-                    "                        WeaponID CHAR(10),\n" +
+                    "                        WeaponID INTEGER,\n" +
                     "                        wpDamage INTEGER,\n" +
                     "                        Price INTEGER,\n" +
                     "                        Rname VARCHAR(50),\n" +
+                    "                        Wname VARCHAR(50),\n" +
                     "                        FOREIGN KEY(Rname) REFERENCES Roles(Rname) on DELETE CASCADE)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
@@ -578,4 +609,46 @@ public class DatabaseConnectionHandler {
 
         return table;
     }
+
+    public String[] getAffordableWeapons(String characterName) {
+        ArrayList<String> weaponNames = new ArrayList<>();
+
+        try {
+            //retrieve the character's current money
+            String retrieveMoneyQuery =
+                    "SELECT Money FROM Characters_Info WHERE Cname = ?";
+            PrintablePreparedStatement moneyPs =
+                    new PrintablePreparedStatement(connection.prepareStatement(retrieveMoneyQuery),
+                            retrieveMoneyQuery,
+                            false);
+            moneyPs.setString(1, characterName);
+            ResultSet moneyRs = moneyPs.executeQuery();
+            int money = 0;
+            if (moneyRs.next()) {
+                money = moneyRs.getInt("Money");
+            }
+            moneyRs.close();
+            moneyPs.close();
+
+            // Find affordable weapons
+            String affordableWeaponsQuery =
+                    "SELECT Wname FROM Weapons WHERE Price <= ?";
+            PrintablePreparedStatement weaponsPs =
+                    new PrintablePreparedStatement(connection.prepareStatement(affordableWeaponsQuery),
+                            affordableWeaponsQuery,
+                            false);
+            weaponsPs.setInt(1, money);
+            ResultSet weaponsRs = weaponsPs.executeQuery();
+
+            while (weaponsRs.next()) {
+                weaponNames.add(weaponsRs.getString("Wname"));
+            }
+            weaponsRs.close();
+            weaponsPs.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return weaponNames.toArray(new String[0]);
+    }
+
 }
