@@ -46,6 +46,7 @@ public class GameSystem implements LoginConnector {
             dbHandler.initializeRoles();
             dbHandler.initializeMaps();
             dbHandler.initializeWeapons();
+            dbHandler.initializeCharacterInfo();
         } else {
             loginWindow.handleLoginFailed();
         }

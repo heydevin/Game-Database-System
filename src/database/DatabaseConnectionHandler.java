@@ -289,11 +289,19 @@ public class DatabaseConnectionHandler {
     }
 
     public void initializeWeapons() {
-        insertWeapon(new Weapons(1000000001, 100, 100, "Warrior", "Hammer"));
+        insertWeapon(new Weapons(1000000001, 100, 150, "Warrior", "Hammer"));
         insertWeapon(new Weapons(1000000002, 20, 200, "Assassin", "Knife"));
-        insertWeapon(new Weapons(1000000002, 20, 200, "Mage", "Magic wand"));
-        insertWeapon(new Weapons(1000000002, 20, 200, "Archer", "Bow"));
-        insertWeapon(new Weapons(1000000002, 20, 200, "Berserker", "Sward"));
+        insertWeapon(new Weapons(1000000002, 20, 250, "Mage", "Magic wand"));
+        insertWeapon(new Weapons(1000000002, 20, 300, "Archer", "Bow"));
+        insertWeapon(new Weapons(1000000002, 20, 400, "Berserker", "Sward"));
+    }
+
+    public void initializeCharacterInfo() {
+        insertCharacterInfoModel(new CharacterInfo(15, 100, "Bobby", "Warrior", "Ocean"));
+        insertCharacterInfoModel(new CharacterInfo(40, 200, "Austin", "Assassin", "Town"));
+        insertCharacterInfoModel(new CharacterInfo(33, 330, "Carols", "Mage", "Town"));
+        insertCharacterInfoModel(new CharacterInfo(72, 90, "Duke", "Archer", "Desert"));
+        insertCharacterInfoModel(new CharacterInfo(18, 170, "Julia", "Berserker", "Highland"));
     }
 
     public void deleteCharacterInfo(String charName) {
@@ -316,11 +324,11 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void updateCharacterMoney(int newLevel, String charName) {
+    public void updateCharacterMoney(int newMoneyValue, String charName) {
         try {
             String query = "UPDATE CHARACTERS_INFO SET MONEY = ? WHERE CNAME = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, newLevel);
+            ps.setInt(1, newMoneyValue);
             ps.setString(2, charName);
 
             int rowCount = ps.executeUpdate();

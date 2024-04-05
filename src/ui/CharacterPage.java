@@ -168,6 +168,12 @@ public class CharacterPage extends JFrame {
         String[] columnNames = {"Character Name", "Level", "Money", "Role", "Map ID", "Current Location"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
+        tableModel.addRow(new Object[]{"Bobby", 15, 100, "Warrior", "Ocean"});
+        tableModel.addRow(new Object[]{"Austin", 40, 200, "Assassin", "Town"});
+        tableModel.addRow(new Object[]{"Carols", 33, 330, "Mage", "Town"});
+        tableModel.addRow(new Object[]{"Duke", 72, 90, "Archer", "Desert"});
+        tableModel.addRow(new Object[]{"Julia", 18, 170, "Berserker", "Highland"});
+
 //        tableModel.addRow(new Object[]{"Peter", 5, 150, 200, "Warrior", "Town"});
 //        tableModel.addRow(new Object[]{"Tom", 8, 200, 300, "Mage", "Forest"});
 
