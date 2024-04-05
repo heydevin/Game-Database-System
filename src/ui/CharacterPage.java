@@ -33,6 +33,7 @@ public class CharacterPage extends JFrame {
     private DefaultTableModel tableModel;
     private JLabel updateTips;
     private JTextField textField_updateLevel;
+    private JButton levelUpButton;
 
     public CharacterPage(LoginConnector delegate) {
         this.delegate = delegate;
@@ -207,6 +208,10 @@ public class CharacterPage extends JFrame {
         affordableWeaponsButton.setBounds(backButton.getX() + backButton.getWidth() + 20, 420, 160, 25);
         panel.add(affordableWeaponsButton);
 
+        levelUpButton = new JButton("Level Up");
+        levelUpButton.setBounds(backButton.getX() + backButton.getWidth() + 60, 420, 100, 25);
+        panel.add(levelUpButton);
+
         JLabel levelText = new JLabel("level");
         levelText.setBounds(300, 45, 60, 25);
         JTextField level = new JTextField(20);
@@ -293,6 +298,21 @@ public class CharacterPage extends JFrame {
                     String[] affordableWeapons = delegate.getAffordableWeapons(characterName);
                     //show the affordableWeapons to user
                     JOptionPane.showMessageDialog(frame, "Affordable weapons for " + characterName + ": " + String.join(", ", affordableWeapons));
+                }
+            }
+        });
+
+        levelUpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(characterTable.getSelectionModel().isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please select a character.");
+                } else{
+                    String charName = tableModel.getValueAt(characterTable.getSelectedRow(), 0).toString();
+                    int currentLevel = Integer.parseInt(tableModel.getValueAt(characterTable.getSelectedRow(), 1).toString());
+                    int newLevel = currentLevel + 1;
+                    delegate.updateCharacterLevel(newLevel, charName);
+                    tableModel.setValueAt(newLevel, characterTable.getSelectedRow(), 1);
                 }
             }
         });

@@ -1,6 +1,7 @@
 package ui;
 
 import connecter.LoginConnector;
+import entity.CharacterInfo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -79,6 +80,8 @@ public class DungeonPage extends JFrame implements ActionListener {
         panel.add(updateButton);
         panel.add(deleteButton);
         panel.add(backButton);
+
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

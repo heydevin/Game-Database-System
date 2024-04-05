@@ -177,5 +177,6 @@ public class GameSystem implements LoginConnector {
     public String[] getAffordableWeapons(String characterName) {
         return dbHandler.getAffordableWeapons(characterName);
     }
+
 }
 

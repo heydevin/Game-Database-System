@@ -31,8 +31,8 @@ CREATE TABLE Weapons(
                         WeaponID INTEGER,
                         wpDamage INTEGER,
                         Price INTEGER,
-                        Rname VARCHAR(50),
                         Wname VARCHAR(50),
+                        Rname VARCHAR(50),
                         FOREIGN KEY(Rname) REFERENCES Roles(Rname) on DELETE CASCADE);
 
 CREATE TABLE Map(
@@ -163,15 +163,15 @@ VALUES ('character4', 4, 400, 'role4', 'M000000004', 'x000000004y000000004', 4, 
 INSERT INTO Characters_Info (Cname, charLevel, Money, Rname, MapID, currLoc, DataID, UserID)
 VALUES ('character5', 5, 500, 'role5', 'M000000005', 'x000000005y000000005', 5, 5);
 
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Wname, Rname)
 VALUES (1000000001, 10, 100, 'hammer', 'role1' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Wname, Rname)
 VALUES (1000000002, 20, 200, 'knife', 'role2' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Wname, Rname)
 VALUES (1000000003, 30, 300, 'magic wand', 'role3' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Wname, Rname)
 VALUES (1000000004, 40, 400, 'bow', 'role4' );
-INSERT INTO Weapons (WeaponID, wpDamage, Price, Rname, Wname)
+INSERT INTO Weapons (WeaponID, wpDamage, Price, Wname, Rname)
 VALUES (1000000005, 50, 500, 'sward', 'role5' );
 
 INSERT INTO Roles (Rname) VALUES ('role1');
