@@ -1,7 +1,6 @@
 package database;
 
-import entity.Account;
-import entity.User;
+import entity.*;
 import util.PrintablePreparedStatement;
 
 import java.sql.*;
@@ -112,23 +111,40 @@ public class DatabaseConnectionHandler {
         try {
             String query = "select table_name from user_tables";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.execute("DROP TABLE UserTable cascade constraints purge");
-            ps.execute("DROP TABLE Account cascade constraints purge");
-            ps.execute("DROP TABLE SavingData cascade constraints purge");
-            ps.execute("DROP TABLE Roles cascade constraints purge");
-            ps.execute("DROP TABLE Weapons cascade constraints purge");
-            ps.execute("DROP TABLE Map cascade constraints purge");
-            ps.execute("DROP TABLE LockedArea cascade constraints purge");
-            ps.execute("DROP TABLE UnlockArea cascade constraints purge");
-            ps.execute("DROP TABLE Coordinate cascade constraints purge");
-            ps.execute("DROP TABLE LearnSkills_Stats cascade constraints purge");
-            ps.execute("DROP TABLE LearnSkills_Info cascade constraints purge");
-            ps.execute("DROP TABLE BossInfo cascade constraints purge");
-            ps.execute("DROP TABLE DungeonStats cascade constraints purge");
-            ps.execute("DROP TABLE DungeonInfo cascade constraints purge");
-            ps.execute("DROP TABLE Characters_Stats cascade constraints purge");
-            ps.execute("DROP TABLE Characters_Info cascade constraints purge");
-            ps.execute("DROP TABLE Store cascade constraints purge");
+            try {ps.execute("DROP TABLE UserTable cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Account cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE SavingData cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Roles cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE UserTable cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Weapons cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Map cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE LockedArea cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE UnlockArea cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Coordinate cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE LearnSkills_Stats cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE LearnSkills_Info cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE BossInfo cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE DungeonStats cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE DungeonInfo cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Characters_Stats cascade constraints purge");}
+            catch (SQLException e){ }
+            try {ps.execute("DROP TABLE Characters_Info cascade constraints purge");}
+            catch (SQLException e){ }
             ps.close();
             System.out.println("Drop finished");
         } catch (SQLException e) {
@@ -152,6 +168,56 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void insertRolesModel(Role role) {
+        try {
+            String query = "INSERT INTO ROLES VALUES (?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, role.getRoleName());
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void insertMapModel(Map map) {
+        try {
+            String query = "INSERT INTO MAP VALUES (?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, map.getMapID());
+            ps.setString(2, map.getMapName());
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void insertCharacterInfoModel(CharacterInfo characterInfo) {
+        try {
+            String query = "INSERT INTO Characters_Info VALUES (?,?,?,?,?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, characterInfo.getCharacterName());
+            ps.setInt(2, characterInfo.getLevel());
+            ps.setInt(3, characterInfo.getMoney());
+            ps.setString(4, characterInfo.getRoleName());
+            ps.setString(5, characterInfo.getMapID());
+            ps.setString(6, characterInfo.getCurrLoc());
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
     public void insertAccountModel(Account model) {
         try {
             String query = "INSERT INTO ACCOUNT VALUES (?,?,?,?)";
@@ -167,6 +233,22 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
         }
+    }
+
+    public void initializeRoles(){
+        insertRolesModel(new Role("Warrior"));
+        insertRolesModel(new Role("Assassin"));
+        insertRolesModel(new Role("Mage"));
+        insertRolesModel(new Role("Archer"));
+        insertRolesModel(new Role("Berserker"));
+    }
+
+    public void initializeMaps(){
+        insertMapModel(new Map("M01", "Town"));
+        insertMapModel(new Map("M02", "Forest"));
+        insertMapModel(new Map("M03", "Ocean"));
+        insertMapModel(new Map("M04", "Desert"));
+        insertMapModel(new Map("M05", "Highland"));
     }
 
     public void initializeUsers() {
@@ -389,6 +471,7 @@ public class DatabaseConnectionHandler {
         try {
             String query = "CREATE TABLE Characters_Stats(\n" +
                     "                                 HP INTEGER,\n" +
+                    "                                 Playtime INT,\n" +
                     "                                 charLevel INTEGER PRIMARY KEY)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
@@ -400,37 +483,32 @@ public class DatabaseConnectionHandler {
 
         try {
             String query = "CREATE TABLE Characters_Info(\n" +
+                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
                     "                                charLevel INTEGER,\n" +
                     "                                Money INTEGER,\n" +
-                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
                     "                                Rname VARCHAR(50),\n" +
                     "                                MapID CHAR(10),\n" +
                     "                                currLoc CHAR(20),\n" +
                     "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
                     "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname))";
+//            String query = "CREATE TABLE Characters_Info(\n" +
+//                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
+//                    "                                charLevel INTEGER,\n" +
+//                    "                                Money INTEGER,\n" +
+//                    "                                Rname VARCHAR(50),\n" +
+//                    "                                MapID CHAR(10),\n" +
+//                    "                                currLoc CHAR(20),\n" +
+//                    "                                DataID CHAR(10),\n" +
+//                    "                                UserID INT,\n" +
+//                    "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
+//                    "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname),\n" +
+//                    "                                FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID))";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             System.out.println("Error in Creating Characters_Info Table");
-        }
-
-        try {
-            String query = "CREATE TABLE Store (\n" +
-                    "                       DataID CHAR(10),\n" +
-                    "                       UserID INT,\n" +
-                    "                       Cname VARCHAR(50),\n" +
-                    "                       Playtime INT,\n" +
-                    "                       PRIMARY KEY (DataID, UserID, Cname),\n" +
-                    "                       FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID),\n" +
-                    "                       FOREIGN KEY (Cname) REFERENCES Characters_Info(Cname))";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            System.out.println("Error in Creating Store Table");
         }
     }
 }

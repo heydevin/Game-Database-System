@@ -3,6 +3,8 @@ package controller;
 import connecter.LoginConnector;
 import database.DatabaseConnectionHandler;
 import entity.Account;
+import entity.CharacterInfo;
+import entity.Role;
 import entity.User;
 import ui.*;
 
@@ -37,10 +39,14 @@ public class GameSystem implements LoginConnector {
             // incomplete
             dbHandler.databaseSetup();
             dbHandler.initializeUsers();
+            dbHandler.initializeRoles();
+            dbHandler.initializeMaps();
         } else {
             loginWindow.handleLoginFailed();
         }
     }
+
+
 
     public void switchPage(int pageIndex){
         if(pageIndex == 1){
@@ -105,5 +111,8 @@ public class GameSystem implements LoginConnector {
 
     public void insertAccountIntoSQL(Account account) {
         dbHandler.insertAccountModel(account);
+    }
+    public void insertCharacterIntoSQL(CharacterInfo character) {
+        dbHandler.insertCharacterInfoModel(character);
     }
 }

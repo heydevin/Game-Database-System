@@ -1,6 +1,7 @@
 package connecter;
 
 import entity.Account;
+import entity.CharacterInfo;
 import entity.User;
 
 public interface LoginConnector {
@@ -10,4 +11,6 @@ public interface LoginConnector {
     User getUserFromSQL(String name);
     Account getAccountFromSQL(String email);
     void insertAccountIntoSQL(Account account);
+    void insertCharacterIntoSQL(CharacterInfo character);
+
 }

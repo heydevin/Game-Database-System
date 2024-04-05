@@ -1,4 +1,4 @@
--- initializing sql
+-- CREATE TABLE Part:
 
 CREATE TABLE UserTable(
     Email VARCHAR(50) PRIMARY KEY,
@@ -109,12 +109,7 @@ CREATE TABLE Characters_Info(
                                 FOREIGN KEY(Rname) REFERENCES Roles(Rname),
                                 FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID));
 
-
-
-
-
-
-
+-- INSERT INTO Part:
 
 INSERT INTO UserTable (Email, Name, Birthday)
 VALUES ('test1@gmail.com','Test User 1', TO_DATE('01-01-2001', 'dd-mm-yyyy'));
