@@ -101,13 +101,31 @@ public class GeneralInfoPage {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role");
-                DefaultTableModel table = delegate.groupByQuery();
-                JTable rsTable = new JTable(table);
-                scrollPane = new JScrollPane(rsTable);
-                rsTable.setFillsViewportHeight(true);
-                scrollPane.setBounds(10, 10, 760, 400);
-                panel.add(scrollPane);
+                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role") {
+                    DefaultTableModel table = delegate.groupByQuery();
+                    JTable rsTable = new JTable(table);
+                    scrollPane = new JScrollPane(rsTable);
+                    rsTable.setFillsViewportHeight(true);
+                    scrollPane.setBounds(10, 10, 760, 400);
+                    panel.add(scrollPane);
+                }
+                if (selectionBox.getSelectedItem() == "the dungeons that have been cleared for each map with more than one such dungeon") {
+                    DefaultTableModel table = delegate.groupByQuery();
+                    JTable rsTable = new JTable(table);
+                    scrollPane = new JScrollPane(rsTable);
+                    rsTable.setFillsViewportHeight(true);
+                    scrollPane.setBounds(10, 10, 760, 400);
+                    panel.add(scrollPane);
+                }
+                if (selectionBox.getSelectedItem() == "the dungeons that have been cleared for each map with more than one such dungeon") {
+                    DefaultTableModel table = delegate.groupByQuery();
+                    JTable rsTable = new JTable(table);
+                    scrollPane = new JScrollPane(rsTable);
+                    rsTable.setFillsViewportHeight(true);
+                    scrollPane.setBounds(10, 10, 760, 400);
+                    panel.add(scrollPane);
+                }
+
             }
         });
     }
