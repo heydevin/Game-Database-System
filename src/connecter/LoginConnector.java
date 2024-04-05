@@ -15,7 +15,9 @@ public interface LoginConnector {
     void insertCharacterIntoSQL(CharacterInfo character);
     DefaultTableModel groupByQuery();
     void deleteCharacterInfoFromSQL(String cName);
-    void updateCharacterLevel(int newLevel,String cName);
+    void updateCharacterMoney(int newLevel,String cName);
 
     String[] getAffordableWeapons(String characterName);
+
+    void updateCharacterLevel(int newLevel, String charName);
 }

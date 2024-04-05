@@ -316,6 +316,27 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void updateCharacterMoney(int newLevel, String charName) {
+        try {
+            String query = "UPDATE CHARACTERS_INFO SET MONEY = ? WHERE CNAME = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, newLevel);
+            ps.setString(2, charName);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " Character " + charName + " does not exist!");
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
     public void updateCharacterLevel(int newLevel, String charName) {
         try {
             String query = "UPDATE CHARACTERS_INFO SET CHARLEVEL = ? WHERE CNAME = ?";
