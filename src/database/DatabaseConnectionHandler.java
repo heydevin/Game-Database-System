@@ -264,6 +264,48 @@ public class DatabaseConnectionHandler {
 
         insertAccountModel(AccountModel1);
     }
+
+    public void deleteCharacterInfo(String charName) {
+        try {
+            String query = "DELETE FROM CHARACTERS_INFO WHERE CNAME = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, charName);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " CHARACTERS_INFO " + charName + " does not exist!");
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void updateCharacterLevel(int newLevel, String charName) {
+        try {
+            String query = "UPDATE CHARACTERS_INFO SET CHARLEVEL = ? WHERE CNAME = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, newLevel);
+            ps.setString(2, charName);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " Character " + charName + " does not exist!");
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
     public void databaseSetup() {
         dropBranchTableIfExists();
 

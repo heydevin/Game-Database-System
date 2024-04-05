@@ -1,8 +1,6 @@
 package ui;
 
 import connecter.LoginConnector;
-import controller.GameSystem;
-import entity.Account;
 import entity.CharacterInfo;
 
 import javax.swing.*;
@@ -15,7 +13,6 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import util.PrintablePreparedStatement;
-import java.util.List;
 
 public class CharacterPage extends JFrame {
     private LoginConnector delegate;
@@ -34,6 +31,8 @@ public class CharacterPage extends JFrame {
 
 
     private DefaultTableModel tableModel;
+    private JLabel updateTips;
+    private JTextField textField_updateLevel;
 
     public CharacterPage(LoginConnector delegate) {
         this.delegate = delegate;
@@ -144,11 +143,11 @@ public class CharacterPage extends JFrame {
                 if(textField_charName.getText().equals("") || textField_charName.getText() == null){
                     JOptionPane.showMessageDialog(addCharFrame, "Please enter character name");
                 } else {
-                    CharacterInfo newChar = new CharacterInfo(0, 0, textField_charName.getText(),
+                    CharacterInfo newChar = new CharacterInfo(1, 999, textField_charName.getText(),
                             rolesBox.getItemAt(rolesBox.getSelectedIndex()),
                             locationsBox.getItemAt(locationsBox.getSelectedIndex()));
                     delegate.insertCharacterIntoSQL(newChar);
-                    tableModel.addRow(new Object[]{textField_charName.getText(), 0, 0, 0,
+                    tableModel.addRow(new Object[]{textField_charName.getText(), 1, 999, newChar.getMapID(),
                             rolesBox.getItemAt(rolesBox.getSelectedIndex()),
                             locationsBox.getItemAt(locationsBox.getSelectedIndex())});
                     addCharFrame.setVisible(false);
@@ -165,15 +164,16 @@ public class CharacterPage extends JFrame {
     }
 
     private void createCharacterTable() {
-        String[] columnNames = {"Character Name", "Level", "HP", "Money", "Role", "Current Location"};
+        String[] columnNames = {"Character Name", "Level", "Money", "Role", "Map ID", "Current Location"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
-        tableModel.addRow(new Object[]{"Peter", 5, 150, 200, "Warrior", "Town"});
-        tableModel.addRow(new Object[]{"Tom", 8, 200, 300, "Mage", "Forest"});
+//        tableModel.addRow(new Object[]{"Peter", 5, 150, 200, "Warrior", "Town"});
+//        tableModel.addRow(new Object[]{"Tom", 8, 200, 300, "Mage", "Forest"});
 
         characterTable = new JTable(tableModel);
         scrollPane = new JScrollPane(characterTable);
         characterTable.setFillsViewportHeight(true);
+        characterTable.setDefaultEditor(Object.class, null);
 
         scrollPane.setBounds(10, 10, 760, 400);
         panel.add(scrollPane);
@@ -181,19 +181,27 @@ public class CharacterPage extends JFrame {
 
     private void createButtons() {
         addButton = new JButton("Insert");
-        updateButton = new JButton("Update");
+        updateButton = new JButton("Update Level");
         deleteButton = new JButton("Delete");
         backButton = new JButton("Back");
 
         addButton.setBounds(10, 420, 100, 25);
-        updateButton.setBounds(120, 420, 100, 25);
-        deleteButton.setBounds(230, 420, 100, 25);
-        backButton.setBounds(340, 420, 100, 25);
+        deleteButton.setBounds(120, 420, 100, 25);
+        updateButton.setBounds(230, 420, 120, 25);
+        backButton.setBounds(360, 420, 100, 25);
+
+        updateTips = new JLabel("Enter New Level Here:");
+        updateTips.setBounds(120, 455, 200,25);
+        textField_updateLevel = new JTextField();
+        textField_updateLevel.setBounds(updateTips.getX()+140,updateTips.getY(),60,updateTips.getHeight());
 
         panel.add(addButton);
         panel.add(updateButton);
         panel.add(deleteButton);
         panel.add(backButton);
+
+        panel.add(updateTips);
+        panel.add(textField_updateLevel);
 
         JLabel levelText = new JLabel("level");
         levelText.setBounds(300, 45, 60, 25);
@@ -220,6 +228,21 @@ public class CharacterPage extends JFrame {
         JTextField currLoc = new JTextField(20);
         currLoc.setBounds(650, 80, 60, 25);
 
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(characterTable.getSelectionModel().isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please select or create a character before you update.");
+                } else if(textField_updateLevel.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter the new level value for character before you update.");
+                } else {
+                    String name = tableModel.getValueAt(characterTable.getSelectedRow(), 0).toString();
+                    delegate.updateCharacterLevel(Integer.parseInt(textField_updateLevel.getText()), name);
+                    tableModel.setValueAt(textField_updateLevel.getText(), characterTable.getSelectedRow(), 1);
+                }
+            }
+        });
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -245,11 +268,13 @@ public class CharacterPage extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = characterTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    tableModel.removeRow(selectedRow);
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Please select a character to delete.");
+                if(characterTable.getSelectionModel().isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please select or create a character before you delete.");
+                } else{
+                    String name = tableModel.getValueAt(characterTable.getSelectedRow(),0).toString();
+                    System.out.println(name);
+                    delegate.deleteCharacterInfoFromSQL(name);
+                    tableModel.removeRow(characterTable.getSelectedRow());
                 }
             }
         });
