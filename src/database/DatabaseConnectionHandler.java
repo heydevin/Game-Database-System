@@ -633,7 +633,7 @@ public class DatabaseConnectionHandler {
         return table;
     }
 
-    public String[] getAffordableWeapons(String characterName) {
+    public String[] getAffordableWeapons(String cname) {
         ArrayList<String> weaponNames = new ArrayList<>();
 
         try {
@@ -644,7 +644,7 @@ public class DatabaseConnectionHandler {
                     new PrintablePreparedStatement(connection.prepareStatement(retrieveMoneyQuery),
                             retrieveMoneyQuery,
                             false);
-            moneyPs.setString(1, characterName);
+            moneyPs.setString(1, cname);
             ResultSet moneyRs = moneyPs.executeQuery();
             int money = 0;
             if (moneyRs.next()) {
@@ -673,5 +673,6 @@ public class DatabaseConnectionHandler {
         }
         return weaponNames.toArray(new String[0]);
     }
+
 
 }
