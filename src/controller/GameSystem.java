@@ -46,41 +46,63 @@ public class GameSystem implements LoginConnector {
         }
     }
 
-
-
     public void switchPage(int pageIndex){
         if(pageIndex == 1){
             // Index 1 is Game Window
+            if(savingDataWindow != null){
+                savingDataWindow.close();
+            }
+            if(characterWindow != null){
+                characterWindow.close();
+            }
+            if(mapWindow != null){
+                mapWindow.close();
+            }
             GameWindow.open();  // OPEN!!
-            savingDataWindow.close();
-            characterWindow.close();
-            mapWindow.close();
         } else if (pageIndex == 2) {
             // Index 2 is Saving Data Window
             if(savingDataWindow == null){
                 savingDataWindow = new SavingDataPage(this);
             }
-            GameWindow.close();
+            if(GameWindow != null){
+                GameWindow.close();
+            }
+            if(characterWindow != null){
+                characterWindow.close();
+            }
+            if(mapWindow != null){
+                mapWindow.close();
+            }
             savingDataWindow.open();  // OPEN!!
-            characterWindow.close();
-            mapWindow.close();
         } else if (pageIndex == 3) {
             // Index 3 is Character Window
             if(characterWindow == null){
                 characterWindow = new CharacterPage(this);
             }
-            GameWindow.close();
-            savingDataWindow.close();
+            if(GameWindow != null){
+                GameWindow.close();
+            }
+            if(savingDataWindow != null){
+                savingDataWindow.close();
+            }
+            if(mapWindow != null){
+                mapWindow.close();
+            }
             characterWindow.open();  // OPEN!!
-            mapWindow.close();
         } else if (pageIndex == 4) {
             // Index 4 is Map Window
             if(mapWindow == null){
                 mapWindow = new MapPage(this);
             }
-            GameWindow.close();
-            savingDataWindow.close();
-            characterWindow.close();
+            if(GameWindow != null){
+                GameWindow.close();
+            }
+            if(savingDataWindow != null){
+                savingDataWindow.close();
+            }
+            if(characterWindow != null){
+                characterWindow.close();
+            }
             mapWindow.open();  // OPEN!!
         }
     }
@@ -114,5 +136,12 @@ public class GameSystem implements LoginConnector {
     }
     public void insertCharacterIntoSQL(CharacterInfo character) {
         dbHandler.insertCharacterInfoModel(character);
+    }
+    public void deleteCharacterInfoFromSQL(String cName) {
+        dbHandler.deleteCharacterInfo(cName);
+    }
+
+    public void updateCharacterLevel(int newLevel,String cName) {
+        dbHandler.updateCharacterLevel(newLevel, cName);
     }
 }

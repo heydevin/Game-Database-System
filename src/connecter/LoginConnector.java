@@ -12,5 +12,6 @@ public interface LoginConnector {
     Account getAccountFromSQL(String email);
     void insertAccountIntoSQL(Account account);
     void insertCharacterIntoSQL(CharacterInfo character);
-
+    void deleteCharacterInfoFromSQL(String cName);
+    void updateCharacterLevel(int newLevel,String cName);
 }
