@@ -17,7 +17,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class GamePage extends JFrame implements ActionListener{
 
     private LoginConnector delegate;
-    private JButton button_Data, button_Char, button_Map, button_Choose, button_login;
+    private JButton button_Data, button_Char, button_Map, button_Choose, button_login, button_GeneralInfo;
     private JLabel name, email, birthday;
     private JComboBox<String> combobox, userCombobox;
     private JLabel language;
@@ -132,19 +132,24 @@ public class GamePage extends JFrame implements ActionListener{
 
         // button display section
         button_Data = new JButton("Data");
-        button_Data.setBounds(90, 280, 150, 100);
+        button_Data.setBounds(10, 280, 150, 100);
         button_Data.addActionListener(this);
         panel.add(button_Data);
 
         button_Char = new JButton("Characters");
-        button_Char.setBounds(button_Data.getX()+230, button_Data.getY(), 150, 100);
+        button_Char.setBounds(button_Data.getX()+205, button_Data.getY(), 150, 100);
         button_Char.addActionListener(this);
         panel.add(button_Char);
 
         button_Map = new JButton("Map");
-        button_Map.setBounds(button_Char.getX()+230, button_Data.getY(), 150, 100);
+        button_Map.setBounds(button_Char.getX()+205, button_Data.getY(), 150, 100);
         button_Map.addActionListener(this);
         panel.add(button_Map);
+
+        button_GeneralInfo = new JButton("General Information");
+        button_GeneralInfo.setBounds(button_Map.getX()+205, button_Data.getY(), 150, 100);
+        button_GeneralInfo.addActionListener(this);
+        panel.add(button_GeneralInfo);
 
 //        imageLand.setImage(imageLand.getImage().getScaledInstance(1280,603,Image.SCALE_DEFAULT));
 //        imageLabelLand = new JLabel(imageLand);
@@ -384,6 +389,9 @@ public class GamePage extends JFrame implements ActionListener{
         }
         if (e.getSource() == button_Map) {
             delegate.switchPage(4);
+        }
+        if (e.getSource() == button_GeneralInfo) {
+            delegate.switchPage(5);
         }
     }
 }

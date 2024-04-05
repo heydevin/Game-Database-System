@@ -63,6 +63,9 @@ public class GameSystem implements LoginConnector {
             if (mapWindow != null) {
                 mapWindow.close();
             }
+            if (GeneralInfoPage != null) {
+                GeneralInfoPage.close();
+            }
             GameWindow.open();  // OPEN!!
         } else if (pageIndex == 2) {
             // Index 2 is Saving Data Window
@@ -77,6 +80,9 @@ public class GameSystem implements LoginConnector {
             }
             if (mapWindow != null) {
                 mapWindow.close();
+            }
+            if (GeneralInfoPage != null) {
+                GeneralInfoPage.close();
             }
             savingDataWindow.open();  // OPEN!!
         } else if (pageIndex == 3) {
@@ -93,6 +99,9 @@ public class GameSystem implements LoginConnector {
             if (mapWindow != null) {
                 mapWindow.close();
             }
+            if (GeneralInfoPage != null) {
+                GeneralInfoPage.close();
+            }
             characterWindow.open();  // OPEN!!
         } else if (pageIndex == 4) {
             // Index 4 is Map Window
@@ -107,6 +116,9 @@ public class GameSystem implements LoginConnector {
             }
             if (characterWindow != null) {
                 characterWindow.close();
+            }
+            if (GeneralInfoPage != null) {
+                GeneralInfoPage.close();
             }
             mapWindow.open();  // OPEN!!
         } else if (pageIndex == 5) {
