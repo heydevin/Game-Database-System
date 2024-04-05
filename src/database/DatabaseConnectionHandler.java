@@ -302,6 +302,8 @@ public class DatabaseConnectionHandler {
         insertCharacterInfoModel(new CharacterInfo(33, 330, "Carols", "Mage", "Town"));
         insertCharacterInfoModel(new CharacterInfo(72, 90, "Duke", "Archer", "Desert"));
         insertCharacterInfoModel(new CharacterInfo(18, 170, "Julia", "Berserker", "Highland"));
+        insertCharacterInfoModel(new CharacterInfo(44, 700, "Katty", "Warrior", "Town"));
+        insertCharacterInfoModel(new CharacterInfo(35, 220, "Jones", "Archer", "Town"));
     }
 
     public void deleteCharacterInfo(String charName) {
