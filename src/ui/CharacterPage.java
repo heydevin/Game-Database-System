@@ -177,9 +177,6 @@ public class CharacterPage extends JFrame {
         tableModel.addRow(new Object[]{"Duke", 72, 90, "Archer", "Desert"});
         tableModel.addRow(new Object[]{"Julia", 18, 170, "Berserker", "Highland"});
 
-//        tableModel.addRow(new Object[]{"Peter", 5, 150, 200, "Warrior", "Town"});
-//        tableModel.addRow(new Object[]{"Tom", 8, 200, 300, "Mage", "Forest"});
-
         characterTable = new JTable(tableModel);
         scrollPane = new JScrollPane(characterTable);
         characterTable.setFillsViewportHeight(true);
