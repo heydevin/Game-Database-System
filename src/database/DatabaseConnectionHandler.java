@@ -620,17 +620,17 @@ public class DatabaseConnectionHandler {
     }
 
     public DefaultTableModel groupBy() {
-        String[] columns = {"role name", "character name"};
+        String[] columns = {"role name", "max character level"};
         DefaultTableModel table = new DefaultTableModel(columns,0);
         try {
-            String query = "SELECT rname, max(CHARLEVEL) FROM CHARACTERS_INFO C, ROLES R WHERE C.RNAME = R.RNAME GROUP BY rname";
+            String query = "SELECT C.rname, max(CHARLEVEL) FROM CHARACTERS_INFO C, ROLES R WHERE C.RNAME = R.RNAME GROUP BY C.rname";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 Object[] row = new Object[columns.length];
                 row[0] = rs.getString("rname");
-                row[1] = rs.getString("cname");
+                row[1] = rs.getString("max(CHARLEVEL)");
                 table.addRow(row);
             }
 
