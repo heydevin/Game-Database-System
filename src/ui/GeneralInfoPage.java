@@ -91,7 +91,7 @@ public class GeneralInfoPage {
 
         selectButton.setBounds(10, 420, 100, 25);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the maximum damage of weapons with maximum weapon damage larger than 50 for each role","the maps that have all characters with money larger than 100"});
+        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the maximum damage of weapons with maximum weapon damage larger than 50 for each role","the maps that have all characters with money larger than 100", "characters with weapons according to role"});
         selectionBox.setBounds(150, 400, 400, 100);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
@@ -124,6 +124,21 @@ public class GeneralInfoPage {
                     rsTable.setFillsViewportHeight(true);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
+                } else if (selectionBox.getSelectedItem() == "characters with weapons according to role") {
+                    String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
+                    if (charName != null) {
+                        DefaultTableModel table = delegate.getCharacterWeaponByRole(charName);
+                        if(scrollPane != null) {
+                            panel.remove(scrollPane);
+                        }
+                        JTable rsTable = new JTable(table);
+                        scrollPane = new JScrollPane(rsTable);
+                        rsTable.setFillsViewportHeight(true);
+                        scrollPane.setBounds(10, 10, 760, 400);
+                        panel.add(scrollPane);
+                        panel.revalidate();
+                        panel.repaint();
+                    }
                 }
 
             }

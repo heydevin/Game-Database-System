@@ -24,4 +24,6 @@ public interface LoginConnector {
     DefaultTableModel findAllQuery();
 
     DefaultTableModel havingQuery();
+
+    DefaultTableModel getCharacterWeaponByRole(String charName);
 }
