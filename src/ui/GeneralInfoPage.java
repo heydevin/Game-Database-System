@@ -19,6 +19,7 @@ public class GeneralInfoPage {
     private JScrollPane scrollPane;
     private JPanel panel;
     private DefaultTableModel tableModel;
+    private JTable table;
 
 
     public GeneralInfoPage(LoginConnector delegate) {
@@ -35,6 +36,8 @@ public class GeneralInfoPage {
         desktop.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         desktop.setSize(WIDTH, HEIGHT);
         centreOnScreen();
+        createTable();
+        createButtons();
         desktop.setVisible(true);
 
         desktop.addWindowListener(new WindowListener() {
@@ -86,12 +89,10 @@ public class GeneralInfoPage {
     private void createButtons() {
         JButton selectButton = new JButton("select");
 
-
-
         selectButton.setBounds(10, 420, 100, 25);
 
         JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the dungeons that have been cleared for each map with more than one such dungeon","the maps that have all characters"});
-        selectionBox.setBounds(160, 140, 100, 30);
+        selectionBox.setBounds(150, 400, 400, 100);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
 
@@ -116,6 +117,19 @@ public class GeneralInfoPage {
 
     public void open() {
         desktop.setVisible(true);
+    }
+
+    private void createTable() {
+
+        tableModel = new DefaultTableModel();
+
+
+        table = new JTable(tableModel);
+        scrollPane = new JScrollPane(table);
+        table.setFillsViewportHeight(true);
+
+        scrollPane.setBounds(10, 10, 760, 400);
+        panel.add(scrollPane);
     }
 
 }
