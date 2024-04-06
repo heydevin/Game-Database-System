@@ -87,12 +87,15 @@ public class GeneralInfoPage {
         desktop.setLocation((width - desktop.getWidth()) / 2, (height - desktop.getHeight()) / 2);
     }
     private void createButtons() {
-        JButton selectButton = new JButton("select");
+        JButton selectButton = new JButton("Select");
 
-        selectButton.setBounds(10, 420, 100, 25);
+        selectButton.setBounds(30, 420, 100, 40);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the maximum damage of weapons with maximum weapon damage larger than 50 for each role","the maps that have all characters with money larger than 100", "characters with weapons according to role"});
-        selectionBox.setBounds(150, 400, 400, 100);
+        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"[Aggregation with Group By] Display Maximum Character Level From Each Role",
+                "[Aggregation With Having] Display Maximum Weapon Damage From Each Role",
+                "[Division] Show Map That Includes ALL Characters With Money Value Over 100",
+                "[Join] Display Character's Role And Weapon Information"});
+        selectionBox.setBounds(160, 420, 600, 40);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
 
@@ -101,7 +104,7 @@ public class GeneralInfoPage {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role") {
+                if (selectionBox.getSelectedItem() == "[Aggregation with Group By] Display Maximum Character Level From Each Role") {
                     if(scrollPane != null) {
                         panel.remove(scrollPane);
                     }
@@ -114,7 +117,7 @@ public class GeneralInfoPage {
                     panel.revalidate();
                     panel.repaint();
                 }
-                if (selectionBox.getSelectedItem() == "the maximum damage of weapons with maximum weapon damage larger than 50 for each role") {
+                if (selectionBox.getSelectedItem() == "[Aggregation With Having] Display Maximum Weapon Damage From Each Role") {
                     if(scrollPane != null) {
                         panel.remove(scrollPane);
                     }
@@ -127,7 +130,7 @@ public class GeneralInfoPage {
                     panel.revalidate();
                     panel.repaint();
                 }
-                if (selectionBox.getSelectedItem() == "the maps that have all characters with money larger than 100") {
+                if (selectionBox.getSelectedItem() == "[Division] Show Map That Includes ALL Characters With Money Value Over 100") {
                     if(scrollPane != null) {
                         panel.remove(scrollPane);
                     }
@@ -139,7 +142,7 @@ public class GeneralInfoPage {
                     panel.add(scrollPane);
                     panel.revalidate();
                     panel.repaint();
-                } else if (selectionBox.getSelectedItem() == "characters with weapons according to role") {
+                } else if (selectionBox.getSelectedItem() == "[Join] Display Character's Role And Weapon Information") {
                     String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
                     if (charName != null) {
                         DefaultTableModel table = delegate.getCharacterWeaponByRole(charName);

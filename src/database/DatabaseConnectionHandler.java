@@ -621,7 +621,7 @@ public class DatabaseConnectionHandler {
     }
 
     public DefaultTableModel groupBy() {
-        String[] columns = {"role name", "max character level"};
+        String[] columns = {"Role Name", "Max Character Level"};
         DefaultTableModel table = new DefaultTableModel(columns,0);
         try {
             String query = "SELECT C.rname, max(CHARLEVEL) FROM CHARACTERS_INFO C, ROLES R WHERE C.RNAME = R.RNAME GROUP BY C.rname";
@@ -645,7 +645,7 @@ public class DatabaseConnectionHandler {
     }
 
     public DefaultTableModel findAll() {
-        String[] columns = {"map ID", "map name"};
+        String[] columns = {"Map ID", "Map Name"};
         DefaultTableModel table = new DefaultTableModel(columns,0);
         try {
             String query = "SELECT MAPID, MAPNAME FROM MAP M where not exists ((select CNAME from CHARACTERS_INFO C where C.money > 100) minus (select CNAME from CHARACTERS_INFO C1 where c1.MAPID=M.MAPID AND C1.money > 100))";
@@ -669,7 +669,7 @@ public class DatabaseConnectionHandler {
     }
 
     public DefaultTableModel having() {
-        String[] columns = {"role name", "max weapon damage"};
+        String[] columns = {"Role Name", "Max Weapon Damage"};
         DefaultTableModel table = new DefaultTableModel(columns,0);
         try {
             String query = "select R.rname, max(S.WPDAMAGE) from ROLES R, WEAPONS S where R.RNAME = S.RNAME group by R.rname having max(S.WPDAMAGE)> 50";
