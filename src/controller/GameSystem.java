@@ -183,6 +183,11 @@ public class GameSystem implements LoginConnector {
         dbHandler.deleteCharacterInfo(cName);
     }
 
+    @Override
+    public DefaultTableModel getProjectionFromDB(String[] column) {
+        return dbHandler.getProjectionFromSQL(column);
+    }
+
     public void updateCharacterMoney(int newMoney, String cName) {
         dbHandler.updateCharacterMoney(newMoney, cName);
     }

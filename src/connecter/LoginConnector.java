@@ -15,6 +15,7 @@ public interface LoginConnector {
     void insertCharacterIntoSQL(CharacterInfo character);
     DefaultTableModel groupByQuery();
     void deleteCharacterInfoFromSQL(String cName);
+    DefaultTableModel getProjectionFromDB(String column[]);
     void updateCharacterMoney(int newLevel,String cName);
 
     String[] getAffordableWeapons(String cName);
@@ -27,5 +28,4 @@ public interface LoginConnector {
 
     DefaultTableModel getCharacterWeaponByRole(String charName);
 
-    DefaultTableModel getRolesWithMinAverageWeaponDamage();
 }

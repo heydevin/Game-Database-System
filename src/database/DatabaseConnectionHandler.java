@@ -599,18 +599,6 @@ public class DatabaseConnectionHandler {
                     "                                currLoc CHAR(20),\n" +
                     "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
                     "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname))";
-//            String query = "CREATE TABLE Characters_Info(\n" +
-//                    "                                Cname VARCHAR(50) PRIMARY KEY,\n" +
-//                    "                                charLevel INTEGER,\n" +
-//                    "                                Money INTEGER,\n" +
-//                    "                                Rname VARCHAR(50),\n" +
-//                    "                                MapID CHAR(10),\n" +
-//                    "                                currLoc CHAR(20),\n" +
-//                    "                                DataID CHAR(10),\n" +
-//                    "                                UserID INT,\n" +
-//                    "                                FOREIGN KEY(MapID) REFERENCES Map(MapID),\n" +
-//                    "                                FOREIGN KEY(Rname) REFERENCES Roles(Rname),\n" +
-//                    "                                FOREIGN KEY (DataID, UserID) REFERENCES SavingData(DataID, UserID))";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -731,6 +719,71 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
         return weaponNames.toArray(new String[0]);
+    }
+
+    public DefaultTableModel getProjectionFromSQL(String[] columns){
+        DefaultTableModel projectionTable = new DefaultTableModel(columns,0);
+        String allForQuery = "SELECT ";
+        int countLength = 1;
+        for(String i: columns){
+            if(countLength == columns.length){
+                allForQuery = allForQuery + i;
+            } else {
+                allForQuery = allForQuery + i + ", ";
+                countLength++;
+            }
+        }
+        allForQuery = allForQuery + " FROM Characters_Info";
+        System.out.println(allForQuery);
+
+        try {
+            String query = allForQuery;
+            PrintablePreparedStatement ps =
+                    new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Object[] row = new Object[columns.length];
+                int count = 0;
+                for(String i: columns){
+                    System.out.println("Check");
+                    if(i == "Cname"){
+                        row[count] = rs.getString("Cname");
+                        count++;
+                    }
+                    if(i == "charLevel"){
+                        row[count] = rs.getString("charLevel");
+                        count++;
+                    }
+                    if(i == "Money"){
+                        row[count] = rs.getString("Money");
+                        count++;
+                    }
+                    if(i == "Rname"){
+                        row[count] = rs.getString("Rname");
+                        count++;
+                    }
+                    if(i == "MapID"){
+                        row[count] = rs.getString("MapID");
+                        count++;
+                    }
+                    if(i == "currLoc"){
+                        row[count] = rs.getString("currLoc");
+                        count++;
+                    }
+                }
+                projectionTable.addRow(row);
+            }
+            System.out.println("Check 2");
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        System.out.println("Check 3");
+        projectionTable.getColumnCount();
+        projectionTable.getRowCount();
+        return projectionTable;
     }
 
     public DefaultTableModel getCharacterWeaponByRole(String cname) {
