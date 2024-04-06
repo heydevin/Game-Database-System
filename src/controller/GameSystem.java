@@ -208,5 +208,10 @@ public class GameSystem implements LoginConnector {
         return table;
     }
 
+    public DefaultTableModel getRolesWithMinAverageWeaponDamage() {
+        DefaultTableModel table = dbHandler.getRolesWithMinAverageWeaponDamage();
+        return table;
+    }
+
 }
 

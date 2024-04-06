@@ -774,4 +774,41 @@ public class DatabaseConnectionHandler {
         return table;
     }
 
+    public DefaultTableModel getRolesWithMinAverageWeaponDamage() {
+        String[] columns = {"Role Name", "Average Damage"};
+        DefaultTableModel table = new DefaultTableModel(columns, 0);
+
+        try {
+            String query =
+                    "SELECT R.RNAME, AVG(W.WPDAMAGE) AS AVG_DAMAGE "+
+                            "FROM ROLES R "+
+                            "JOIN WEAPONS W ON R.RNAME = W.RNAME "+
+                            "GROUP BY R.RNAME "+
+                            "HAVING AVG(W.WPDAMAGE) = ("+
+                            "    SELECT MIN(AVG_DAMAGE) FROM ("+
+                            "        SELECT AVG(WPDAMAGE) AS AVG_DAMAGE "+
+                            "        FROM WEAPONS "+
+                            "        GROUP BY RNAME"+
+                            "    )"+
+                            ")";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] row = new Object[columns.length];
+                row[0] = rs.getString("RNAME");
+                row[1] = rs.getFloat("AVG_DAMAGE");
+                table.addRow(row);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return table;
+    }
+
 }
