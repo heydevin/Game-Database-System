@@ -81,6 +81,5 @@ public class LoginPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Trying to log in...");
         delegate.login(textField_username.getText(), String.valueOf(textField_password.getText()));
-        System.out.println("its working");
     }
 }

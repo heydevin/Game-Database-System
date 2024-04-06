@@ -148,7 +148,7 @@ public class CharacterPage extends JFrame {
                             rolesBox.getItemAt(rolesBox.getSelectedIndex()),
                             locationsBox.getItemAt(locationsBox.getSelectedIndex()));
                     delegate.insertCharacterIntoSQL(newChar);
-                    tableModel.addRow(new Object[]{textField_charName.getText(), 1, 999, newChar.getMapID(),
+                    tableModel.addRow(new Object[]{textField_charName.getText(), 1, 999,
                             rolesBox.getItemAt(rolesBox.getSelectedIndex()),
                             locationsBox.getItemAt(locationsBox.getSelectedIndex())});
                     addCharFrame.setVisible(false);
@@ -165,7 +165,7 @@ public class CharacterPage extends JFrame {
     }
 
     private void createCharacterTable() {
-        String[] columnNames = {"Character Name", "Level", "Money", "Role", "Map ID", "Current Location"};
+        String[] columnNames = {"Character Name", "Level", "Money", "Role", "Current Location"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
         // add new characters
