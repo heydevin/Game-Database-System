@@ -845,7 +845,7 @@ public class DatabaseConnectionHandler {
             while (rs.next()) {
                 Object[] row = new Object[columns.length];
                 row[0] = rs.getString("RNAME");
-                row[1] = rs.getFloat("AVG_DAMAGE");
+                row[1] = rs.getInt("AVG_DAMAGE");
                 table.addRow(row);
             }
 

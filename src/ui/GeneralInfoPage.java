@@ -80,9 +80,6 @@ public class GeneralInfoPage {
         });
     }
 
-
-
-
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -99,12 +96,12 @@ public class GeneralInfoPage {
         MapID = new JCheckBox("Map ID Of Character Location");
         Location = new JCheckBox("Character Location");
 
-        CharacterName.setBounds(180,420,130,20);
-        CharacterLevel.setBounds(350,420,130,20);
-        Money.setBounds(580,420,130,20);
-        RoleName.setBounds(180,450,130,20);
-        MapID.setBounds(350,450,200,20);
-        Location.setBounds(580,450,160,20);
+        CharacterName.setBounds(180,450,130,20);
+        CharacterLevel.setBounds(350,450,130,20);
+        Money.setBounds(580,450,130,20);
+        RoleName.setBounds(180,480,130,20);
+        MapID.setBounds(350,480,200,20);
+        Location.setBounds(580,480,160,20);
 
         panel.add(CharacterName);
         panel.add(CharacterLevel);
@@ -114,7 +111,7 @@ public class GeneralInfoPage {
         panel.add(Location);
 
 
-        projectionButton.setBounds(30, 420, 100, 40);
+        projectionButton.setBounds(30, 450, 100, 40);
         projectionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -193,14 +190,14 @@ public class GeneralInfoPage {
             }
         });
 
-        selectButton.setBounds(30, 550, 100, 40);
+        selectButton.setBounds(30, 530, 100, 40);
 
         JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"[Aggregation with Group By] Display Maximum Character Level From Each Role",
                 "[Aggregation With Having] Display Maximum Weapon Damage From Each Role",
                 "[Division] Show Map That Includes ALL Characters With Money Value Over 100",
                 "[Join] Display Character's Role And Weapon Information",
                 "[Nested aggregation] Display roles with the minimum average weapon damage"});
-        selectionBox.setBounds(160, 550, 600, 40);
+        selectionBox.setBounds(160, 530, 600, 40);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
 
