@@ -734,7 +734,6 @@ public class DatabaseConnectionHandler {
             }
         }
         allForQuery = allForQuery + " FROM Characters_Info";
-        System.out.println(allForQuery);
 
         try {
             String query = allForQuery;
@@ -746,7 +745,6 @@ public class DatabaseConnectionHandler {
                 Object[] row = new Object[columns.length];
                 int count = 0;
                 for(String i: columns){
-                    System.out.println("Check");
                     if(i == "Cname"){
                         row[count] = rs.getString("Cname");
                         count++;
@@ -774,15 +772,11 @@ public class DatabaseConnectionHandler {
                 }
                 projectionTable.addRow(row);
             }
-            System.out.println("Check 2");
             rs.close();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-        System.out.println("Check 3");
-        projectionTable.getColumnCount();
-        projectionTable.getRowCount();
         return projectionTable;
     }
 

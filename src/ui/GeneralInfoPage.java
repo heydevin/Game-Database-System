@@ -118,6 +118,9 @@ public class GeneralInfoPage {
         projectionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(scrollPane != null) {
+                    panel.remove(scrollPane);
+                }
                 String[] columns = new String[]{};
                 String[] tableColumns = new String[]{};
                 int countCheckBox = 0;
@@ -178,11 +181,10 @@ public class GeneralInfoPage {
                         columns[i] = "currLoc";
                         i++;
                     }
-                    System.out.println(columns.length);
                     DefaultTableModel table = delegate.getProjectionFromDB(columns);
-                    JTable rsTable = new JTable(table);
-                    scrollPane = new JScrollPane(rsTable);
-                    rsTable.setFillsViewportHeight(true);
+                    JTable projectTable = new JTable(table);
+                    projectTable.setFillsViewportHeight(true);
+                    scrollPane = new JScrollPane(projectTable);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
                     panel.revalidate();
