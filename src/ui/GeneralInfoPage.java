@@ -91,71 +91,56 @@ public class GeneralInfoPage {
 
         selectButton.setBounds(10, 420, 100, 25);
 
-        JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"names of the characters with highest level for each role", "the maximum damage of weapons with maximum weapon damage larger than 50 for each role","the maps that have all characters with money larger than 100", "characters with weapons according to role"});
+        JComboBox<String> selectionBox = new JComboBox<String>(
+                new String[]{
+                        "names of the characters with highest level for each role",
+                        "the maximum damage of weapons with maximum weapon damage larger than 50 for each role",
+                        "the maps that have all characters with money larger than 100",
+                        "characters with weapons according to role",
+                        "roles with the minimum average weapon damage"
+                }
+        );
         selectionBox.setBounds(150, 400, 400, 100);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
-
 
         panel.add(selectButton);
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role") {
-                    if(scrollPane != null) {
-                        panel.remove(scrollPane);
-                    }
-                    DefaultTableModel table = delegate.groupByQuery();
-                    JTable rsTable = new JTable(table);
-                    scrollPane = new JScrollPane(rsTable);
-                    rsTable.setFillsViewportHeight(true);
-                    scrollPane.setBounds(10, 10, 760, 400);
-                    panel.add(scrollPane);
-                    panel.revalidate();
-                    panel.repaint();
-                }
-                if (selectionBox.getSelectedItem() == "the maximum damage of weapons with maximum weapon damage larger than 50 for each role") {
-                    if(scrollPane != null) {
-                        panel.remove(scrollPane);
-                    }
-                    DefaultTableModel table = delegate.havingQuery();
-                    JTable rsTable = new JTable(table);
-                    scrollPane = new JScrollPane(rsTable);
-                    rsTable.setFillsViewportHeight(true);
-                    scrollPane.setBounds(10, 10, 760, 400);
-                    panel.add(scrollPane);
-                    panel.revalidate();
-                    panel.repaint();
-                }
-                if (selectionBox.getSelectedItem() == "the maps that have all characters with money larger than 100") {
-                    if(scrollPane != null) {
-                        panel.remove(scrollPane);
-                    }
-                    DefaultTableModel table = delegate.findAllQuery();
-                    JTable rsTable = new JTable(table);
-                    scrollPane = new JScrollPane(rsTable);
-                    rsTable.setFillsViewportHeight(true);
-                    scrollPane.setBounds(10, 10, 760, 400);
-                    panel.add(scrollPane);
-                    panel.revalidate();
-                    panel.repaint();
-                } else if (selectionBox.getSelectedItem() == "characters with weapons according to role") {
-                    String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
-                    if (charName != null) {
-                        DefaultTableModel table = delegate.getCharacterWeaponByRole(charName);
-                        if(scrollPane != null) {
-                            panel.remove(scrollPane);
-                        }
-                        JTable rsTable = new JTable(table);
-                        scrollPane = new JScrollPane(rsTable);
-                        rsTable.setFillsViewportHeight(true);
-                        scrollPane.setBounds(10, 10, 760, 400);
-                        panel.add(scrollPane);
-                        panel.revalidate();
-                        panel.repaint();
-                    }
+                if(scrollPane != null) {
+                    panel.remove(scrollPane);
                 }
 
+                DefaultTableModel tableModel;
+                switch ((String)selectionBox.getSelectedItem()) {
+                    case "names of the characters with highest level for each role":
+                        tableModel = delegate.groupByQuery();
+                        break;
+                    case "the maximum damage of weapons with maximum weapon damage larger than 50 for each role":
+                        tableModel = delegate.havingQuery();
+                        break;
+                    case "the maps that have all characters with money larger than 100":
+                        tableModel = delegate.findAllQuery();
+                        break;
+                    case "characters with weapons according to role":
+                        String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
+                        tableModel = charName != null ? delegate.getCharacterWeaponByRole(charName) : new DefaultTableModel();
+                        break;
+                    case "roles with the minimum average weapon damage":
+                        tableModel = delegate.getRolesWithMinAverageWeaponDamage();
+                        break;
+                    default:
+                        return;
+                }
+
+                JTable rsTable = new JTable(tableModel);
+                scrollPane = new JScrollPane(rsTable);
+                rsTable.setFillsViewportHeight(true);
+                scrollPane.setBounds(10, 10, 760, 400);
+                panel.add(scrollPane);
+                panel.revalidate();
+                panel.repaint();
             }
         });
     }
