@@ -102,28 +102,43 @@ public class GeneralInfoPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selectionBox.getSelectedItem() == "names of the characters with highest level for each role") {
+                    if(scrollPane != null) {
+                        panel.remove(scrollPane);
+                    }
                     DefaultTableModel table = delegate.groupByQuery();
                     JTable rsTable = new JTable(table);
                     scrollPane = new JScrollPane(rsTable);
                     rsTable.setFillsViewportHeight(true);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
+                    panel.revalidate();
+                    panel.repaint();
                 }
                 if (selectionBox.getSelectedItem() == "the maximum damage of weapons with maximum weapon damage larger than 50 for each role") {
+                    if(scrollPane != null) {
+                        panel.remove(scrollPane);
+                    }
                     DefaultTableModel table = delegate.havingQuery();
                     JTable rsTable = new JTable(table);
                     scrollPane = new JScrollPane(rsTable);
                     rsTable.setFillsViewportHeight(true);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
+                    panel.revalidate();
+                    panel.repaint();
                 }
                 if (selectionBox.getSelectedItem() == "the maps that have all characters with money larger than 100") {
+                    if(scrollPane != null) {
+                        panel.remove(scrollPane);
+                    }
                     DefaultTableModel table = delegate.findAllQuery();
                     JTable rsTable = new JTable(table);
                     scrollPane = new JScrollPane(rsTable);
                     rsTable.setFillsViewportHeight(true);
                     scrollPane.setBounds(10, 10, 760, 400);
                     panel.add(scrollPane);
+                    panel.revalidate();
+                    panel.repaint();
                 } else if (selectionBox.getSelectedItem() == "characters with weapons according to role") {
                     String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
                     if (charName != null) {
