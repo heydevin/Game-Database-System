@@ -28,4 +28,6 @@ public interface LoginConnector {
 
     DefaultTableModel getCharacterWeaponByRole(String charName);
 
+    DefaultTableModel getRolesWithMinAverageWeaponDamage();
+
 }

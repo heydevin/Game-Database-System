@@ -198,7 +198,8 @@ public class GeneralInfoPage {
         JComboBox<String> selectionBox = new JComboBox<String>(new String[]{"[Aggregation with Group By] Display Maximum Character Level From Each Role",
                 "[Aggregation With Having] Display Maximum Weapon Damage From Each Role",
                 "[Division] Show Map That Includes ALL Characters With Money Value Over 100",
-                "[Join] Display Character's Role And Weapon Information"});
+                "[Join] Display Character's Role And Weapon Information",
+                "[Nested aggregation] Display roles with the minimum average weapon damage"});
         selectionBox.setBounds(160, 550, 600, 40);
         selectionBox.setBackground(Color.white);
         panel.add(selectionBox);
@@ -246,7 +247,8 @@ public class GeneralInfoPage {
                     panel.add(scrollPane);
                     panel.revalidate();
                     panel.repaint();
-                } else if (selectionBox.getSelectedItem() == "[Join] Display Character's Role And Weapon Information") {
+                }
+                if (selectionBox.getSelectedItem() == "[Join] Display Character's Role And Weapon Information") {
                     String charName = JOptionPane.showInputDialog(desktop, "Please enter the character name:");
                     if (charName != null) {
                         DefaultTableModel table = delegate.getCharacterWeaponByRole(charName);
@@ -261,6 +263,21 @@ public class GeneralInfoPage {
                         panel.revalidate();
                         panel.repaint();
                     }
+                }
+                if (selectionBox.getSelectedItem() == "[Nested aggregation] Display roles with the minimum average weapon damage") {
+                    DefaultTableModel table = delegate.getRolesWithMinAverageWeaponDamage();
+                    if(scrollPane != null) {
+                        panel.remove(scrollPane);
+                    }
+
+                    JTable rsTable = new JTable(table);
+                    scrollPane = new JScrollPane(rsTable);
+                    rsTable.setFillsViewportHeight(true);
+                    scrollPane.setBounds(10, 10, 760, 400);
+
+                    panel.add(scrollPane);
+                    panel.revalidate();
+                    panel.repaint();
                 }
 
             }
