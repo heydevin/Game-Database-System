@@ -298,7 +298,7 @@ public class DatabaseConnectionHandler {
     }
 
     public void initializeCharacterInfo() {
-        insertCharacterInfoModel(new CharacterInfo(15, 100, "Bobby", "Warrior", "Ocean"));
+        insertCharacterInfoModel(new CharacterInfo(15, 100, "Jerry", "Warrior", "Ocean"));
         insertCharacterInfoModel(new CharacterInfo(40, 200, "Austin", "Assassin", "Town"));
         insertCharacterInfoModel(new CharacterInfo(33, 330, "Carols", "Mage", "Town"));
         insertCharacterInfoModel(new CharacterInfo(72, 90, "Duke", "Archer", "Desert"));

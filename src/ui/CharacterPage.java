@@ -169,7 +169,7 @@ public class CharacterPage extends JFrame {
         tableModel = new DefaultTableModel(columnNames, 0);
 
         // add new characters
-        tableModel.addRow(new Object[]{"Bobby", 15, 100, "Warrior", "Ocean"});
+        tableModel.addRow(new Object[]{"Jerry", 15, 100, "Warrior", "Ocean"});
         tableModel.addRow(new Object[]{"Austin", 40, 200, "Assassin", "Town"});
         tableModel.addRow(new Object[]{"Carols", 33, 330, "Mage", "Town"});
         tableModel.addRow(new Object[]{"Katty", 44, 700, "Warrior", "Town"});
