@@ -17,17 +17,10 @@ public interface LoginConnector {
     void deleteCharacterInfoFromSQL(String cName);
     DefaultTableModel getProjectionFromDB(String column[]);
     void updateCharacterMoney(int newLevel,String cName);
-
     String[] getAffordableWeapons(String cName);
-
     void updateCharacterLevel(int currentLevel, String cName);
-
     DefaultTableModel findAllQuery();
-
     DefaultTableModel havingQuery();
-
     DefaultTableModel getCharacterWeaponByRole(String charName);
-
     DefaultTableModel getRolesWithMinAverageWeaponDamage();
-
 }

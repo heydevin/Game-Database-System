@@ -271,21 +271,10 @@ public class DatabaseConnectionHandler {
     }
 
     public void initializeUsers() {
-        User UserModel1 = new User("Desheng", "Devin@gmail.com", Date.valueOf("2000-1-10"));
-        User UserModel2 = new User("Xiran", "Xiran@gmail.com", Date.valueOf("2002-4-11"));
-        User UserModel3 = new User("James", "James@gmail.com", Date.valueOf("2000-1-03"));
-
+        User UserModel1 = new User("Devin", "Devin@gmail.com", Date.valueOf("2000-1-18"));
         insertUserModel(UserModel1);
-        insertUserModel(UserModel2);
-        insertUserModel(UserModel3);
-
         Account AccountModel1 = new Account(100000001, "p","Chinese", UserModel1.getEmail());
-        Account AccountModel2 = new Account(100000002, "123", "English", UserModel2.getEmail());
-        Account AccountModel3 = new Account(100000003, "123", "English", UserModel3.getEmail());
-
         insertAccountModel(AccountModel1);
-        insertAccountModel(AccountModel2);
-        insertAccountModel(AccountModel3);
     }
 
     public void initializeWeapons() {
@@ -295,16 +284,6 @@ public class DatabaseConnectionHandler {
         insertWeapon(new Weapons(1000000002, 51, 250, "Mage", "Magic wand"));
         insertWeapon(new Weapons(1000000002, 20, 300, "Archer", "Bow"));
         insertWeapon(new Weapons(1000000002, 20, 400, "Berserker", "Sword"));
-    }
-
-    public void initializeCharacterInfo() {
-        insertCharacterInfoModel(new CharacterInfo(15, 100, "Jerry", "Warrior", "Ocean"));
-        insertCharacterInfoModel(new CharacterInfo(40, 200, "Austin", "Assassin", "Town"));
-        insertCharacterInfoModel(new CharacterInfo(33, 330, "Carols", "Mage", "Town"));
-        insertCharacterInfoModel(new CharacterInfo(72, 90, "Duke", "Archer", "Desert"));
-        insertCharacterInfoModel(new CharacterInfo(18, 80, "Julia", "Berserker", "Highland"));
-        insertCharacterInfoModel(new CharacterInfo(44, 700, "Katty", "Warrior", "Town"));
-        insertCharacterInfoModel(new CharacterInfo(35, 220, "Jones", "Archer", "Town"));
     }
 
     public void deleteCharacterInfo(String charName) {

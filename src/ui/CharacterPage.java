@@ -164,19 +164,14 @@ public class CharacterPage extends JFrame {
         addCharFrame.setVisible(true);
     }
 
+    public void addCharacterInfoToTable(CharacterInfo character) {
+        tableModel.addRow(new Object[]{character.getCharacterName(), character.getLevel(),
+                character.getMoney(), character.getRoleName(), character.getCurrLoc()});
+    }
+
     private void createCharacterTable() {
         String[] columnNames = {"Character Name", "Level", "Money", "Role", "Current Location"};
         tableModel = new DefaultTableModel(columnNames, 0);
-
-        // add new characters
-        tableModel.addRow(new Object[]{"Jerry", 15, 100, "Warrior", "Ocean"});
-        tableModel.addRow(new Object[]{"Austin", 40, 200, "Assassin", "Town"});
-        tableModel.addRow(new Object[]{"Carols", 33, 330, "Mage", "Town"});
-        tableModel.addRow(new Object[]{"Katty", 44, 700, "Warrior", "Town"});
-        tableModel.addRow(new Object[]{"Jones", 35, 220, "Archer", "Town"});
-        tableModel.addRow(new Object[]{"Duke", 72, 90, "Archer", "Desert"});
-        tableModel.addRow(new Object[]{"Julia", 18, 170, "Berserker", "Highland"});
-
         characterTable = new JTable(tableModel);
         scrollPane = new JScrollPane(characterTable);
         characterTable.setFillsViewportHeight(true);
@@ -261,14 +256,6 @@ public class CharacterPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                int levelInput = Integer.parseInt(level.getText());
-//                int moneyInput = Integer.parseInt(money.getText());
-//                String cnameInput = cname.getText();
-//                String rnameInput = rname.getText();
-//                String mapIdInput = mapID.getText();
-//                String currLocInput = currLoc.getText();
-//                CharacterInfo characterInfo = new CharacterInfo(levelInput,moneyInput,cnameInput,rnameInput,mapIdInput,currLocInput);
-//                insertCharacter_Info(characterInfo);
                 setUpAddCharacterPanel();
             }
         });

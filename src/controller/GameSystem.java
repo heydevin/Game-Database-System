@@ -40,18 +40,38 @@ public class GameSystem implements LoginConnector {
             System.out.println("Successfully Connected! Switching to Game Page...");
 
             GameWindow = new GamePage(this);
-            // incomplete
+            // dbHandler Part
             dbHandler.databaseSetup();
             dbHandler.initializeUsers();
             dbHandler.initializeRoles();
             dbHandler.initializeMaps();
             dbHandler.initializeWeapons();
-            dbHandler.initializeCharacterInfo();
         } else {
             loginWindow.handleLoginFailed();
         }
     }
 
+    public void insertNewCharacterInfo(CharacterInfo Character) {
+        dbHandler.insertCharacterInfoModel(Character);
+        characterWindow.addCharacterInfoToTable(Character);
+    }
+
+    public void initializingCharacterInfo() {
+        CharacterInfo Bobby = new CharacterInfo(15, 100, "Bobby", "Warrior", "Ocean");
+        CharacterInfo Austin = new CharacterInfo(40, 200, "Austin", "Assassin", "Town");
+        CharacterInfo Carols = new CharacterInfo(33, 330, "Carols", "Mage", "Town");
+        CharacterInfo Katty = new CharacterInfo(44, 700, "Katty", "Warrior", "Town");
+        CharacterInfo Jones = new CharacterInfo(35, 220, "Jones", "Archer", "Town");
+        CharacterInfo Duke = new CharacterInfo(72, 90, "Duke", "Archer", "Desert");
+        CharacterInfo Julia = new CharacterInfo(18, 170, "Julia", "Berserker", "Highland");
+        insertNewCharacterInfo(Bobby);
+        insertNewCharacterInfo(Austin);
+        insertNewCharacterInfo(Carols);
+        insertNewCharacterInfo(Katty);
+        insertNewCharacterInfo(Jones);
+        insertNewCharacterInfo(Duke);
+        insertNewCharacterInfo(Julia);
+    }
     public void switchPage(int pageIndex) {
         if (pageIndex == 1) {
             // Index 1 is Game Window
@@ -90,6 +110,7 @@ public class GameSystem implements LoginConnector {
             // Index 3 is Character Window
             if (characterWindow == null) {
                 characterWindow = new CharacterPage(this);
+                initializingCharacterInfo();
             }
             if (GameWindow != null) {
                 GameWindow.close();
@@ -219,4 +240,3 @@ public class GameSystem implements LoginConnector {
     }
 
 }
-
